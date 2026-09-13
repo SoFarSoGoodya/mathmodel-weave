@@ -1,0 +1,41 @@
+{
+  "method": "deterministic metric recompute from observations",
+  "metrics": [
+    {
+      "definition": {
+        "aggregation": "mean",
+        "field": "baseline_value",
+        "name": "baseline_mean_value",
+        "unit": "value"
+      },
+      "denominator": {
+        "completed": 2,
+        "failed": 1,
+        "planned": 3
+      },
+      "name": "baseline_mean_value",
+      "raw_observation_count": 2,
+      "source": "observations.jsonl",
+      "unit": "value",
+      "value": 16.5
+    },
+    {
+      "definition": {
+        "aggregation": "mean",
+        "field": "alternative_value",
+        "name": "alternative_mean_value",
+        "unit": "value"
+      },
+      "denominator": {
+        "completed": 2,
+        "failed": 1,
+        "planned": 3
+      },
+      "name": "alternative_mean_value",
+      "raw_observation_count": 2,
+      "source": "observations.jsonl",
+      "unit": "value",
+      "value": 19.5
+    }
+  ]
+}

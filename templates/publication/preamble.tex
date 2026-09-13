@@ -1,0 +1,41 @@
+\usepackage[a4paper,margin=2.5cm,headheight=15pt]{geometry}
+\setCJKmainfont{Noto Serif CJK SC}
+\setCJKsansfont{Noto Sans CJK SC}
+\setCJKmonofont{Noto Sans CJK SC}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{graphicx,subcaption}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\hypersetup{
+  unicode=true,
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=[RGB]{0,92,138},
+  pdftitle={\PaperTitle},
+  pdfauthor={},
+  pdfsubject={数学建模论文},
+  pdfkeywords={\PaperKeywords}
+}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0pt}
+\linespread{1.18}
+\setlist{nosep,leftmargin=2em}
+\setcounter{secnumdepth}{3}
+\captionsetup{font=small,labelfont=bf,labelsep=quad}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\dif}{\mathop{}\!\mathrm{d}}
+\newcommand{\DemoNotice}{%
+  \ifnum\IsDemonstration=1
+    \par\noindent\colorbox{yellow!18}{\parbox{0.96\linewidth}{\small\textbf{开发演示：}
+    本文全部数值来自 D4 合成运行包，不是竞赛数据或正式结论；文中的人工采纳记录也是明确标注的接口夹具。}}
+  \fi
+}

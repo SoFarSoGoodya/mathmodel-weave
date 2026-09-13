@@ -1,0 +1,20 @@
+{
+  "schema_version": "publication-ai-usage-v1",
+  "fixture": true,
+  "fixture_notice": "This record validates the D1+D3 adoption interface only and is not live human approval.",
+  "records": [
+    {
+      "task_id": "d5-publication-demo-fixture",
+      "tool": "OpenAI Codex",
+      "model": "development-fixture",
+      "purpose": "验证从正式运行清单生成中文论文、图表与 PDF 的发布接口",
+      "stage": "论文结构整理、确定性代码实现与排版检查",
+      "process_ref": "examples/publication/synthetic-paper/ai-usage.fixture.json",
+      "human_adoption": {
+        "adopted": "仅采用问题驱动的章节结构和排版修复建议；数值全部来自 D4 正式合成运行包",
+        "modifications": "人工重写数学解释，删除没有数据定义的误差区间，并将所有重复结果改为生成宏",
+        "verification": "人工核对运行清单、源观测、公式、引用、匿名信息和全部 PDF 页面；本条为开发夹具，不是实际批准"
+      }
+    }
+  ]
+}

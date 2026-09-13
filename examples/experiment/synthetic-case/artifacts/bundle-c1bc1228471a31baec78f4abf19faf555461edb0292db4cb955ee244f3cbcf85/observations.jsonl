@@ -1,0 +1,3 @@
+{"instance_id": "known-gap", "status": "completed", "baseline_value": 12, "alternative_value": 18, "known_optimum": 18}
+{"instance_id": "known-tie", "status": "completed", "baseline_value": 21, "alternative_value": 21, "known_optimum": 21}
+{"instance_id": "deliberate-failure", "status": "failed", "reason": "synthetic deliberate failure"}

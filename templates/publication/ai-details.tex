@@ -1,0 +1,40 @@
+\documentclass[UTF8,a4paper,zihao=-4,fontset=none]{ctexart}
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{booktabs,longtable,array,hyperref}
+\setCJKmainfont{Noto Serif CJK SC}
+\setCJKsansfont{Noto Sans CJK SC}
+\setCJKmonofont{Noto Sans CJK SC}
+\hypersetup{unicode=true,pdfauthor={},pdftitle={AI工具使用详情}}
+\input{generated/ai-usage.tex}
+\begin{document}
+\begin{center}
+  {\zihao{2}\bfseries AI工具使用详情\par}
+  \vspace{0.8em}
+  {\small 与论文电子版同一构建生成}
+\end{center}
+\ifx\AIUsageFixtureNotice\empty\else
+  \noindent\textbf{演示说明：}\AIUsageFixtureNotice\par\medskip
+\fi
+\small
+\setlength{\tabcolsep}{4pt}
+\setlength{\LTleft}{0pt}
+\setlength{\LTright}{0pt}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.04\textwidth}
+                  >{\raggedright\arraybackslash}p{0.14\textwidth}
+                  >{\raggedright\arraybackslash}p{0.13\textwidth}
+                  >{\raggedright\arraybackslash}p{0.10\textwidth}
+                  >{\raggedright\arraybackslash}p{0.15\textwidth}
+                  >{\raggedright\arraybackslash}p{0.15\textwidth}
+                  >{\raggedright\arraybackslash}p{0.15\textwidth}}
+\toprule
+序号 & 工具/型号 & 目的 & 环节 & 采纳情况 & 人工修改 & 人工核验 \\
+\midrule
+\endfirsthead
+\toprule
+序号 & 工具/型号 & 目的 & 环节 & 采纳情况 & 人工修改 & 人工核验 \\
+\midrule
+\endhead
+\AIUsageDetailRows
+\bottomrule
+\end{longtable}
+\end{document}

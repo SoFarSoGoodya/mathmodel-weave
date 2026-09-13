@@ -1,0 +1,29 @@
+# Credential-free example. Provider endpoints and authentication belong in user-level Codex config.
+[runtime]
+local_slots = 2
+poll_interval = 0.25
+
+[policy]
+sandbox = "workspace-write"
+allow_network = false
+allowed_extra_write_paths = []
+
+[profiles.default]
+model = "gpt-5.6-terra"
+effort = "high"
+
+[profiles.fast]
+model = "gpt-5.6-luna"
+effort = "medium"
+# codex_profile = "optional-user-level-provider-profile"
+
+[profiles.standard]
+model = "gpt-5.6-terra"
+effort = "high"
+
+[profiles.full]
+model = "gpt-5.6-sol"
+effort = "high"
+
+[tools]
+# exa = "exa"

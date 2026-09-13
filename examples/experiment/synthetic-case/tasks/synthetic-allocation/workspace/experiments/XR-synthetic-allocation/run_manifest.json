@@ -1,0 +1,138 @@
+{
+  "checks": [
+    {
+      "evidence": "run_spec.json",
+      "kind": "input_reference",
+      "method": "frozen task input hash",
+      "status": "passed"
+    },
+    {
+      "evidence": "observations.jsonl",
+      "kind": "output_schema",
+      "method": "complete JSONL records only",
+      "status": "passed"
+    },
+    {
+      "evidence": "metrics.json",
+      "kind": "metric_recompute",
+      "method": "deterministic recompute from observations",
+      "status": "passed"
+    },
+    {
+      "evidence": "checks/known-optimum-bound.json",
+      "kind": "independent_check",
+      "method": "independent checker implementation",
+      "name": "known-optimum-bound",
+      "status": "passed"
+    }
+  ],
+  "class": "formal",
+  "code": "code/allocation.py",
+  "comparison_contract": {
+    "path": "demo/comparison_contract.json",
+    "sha256": "9c77bda8d3156e35a16327b136c504ca14ea91a533410fd3fb10188569f4e13c"
+  },
+  "config": "config/allocation_config.json",
+  "environment": {
+    "platform": "linux",
+    "python": "3.12.3",
+    "uv_lock": "uv.lock",
+    "uv_lock_sha256": "d6a1b5504a9a8659b30d5d9b18350bed82baef3ec18fa75b18872469d9b907a1"
+  },
+  "experiment_request": {
+    "purpose": "Synthetic allocation baseline-versus-optimum demonstration; not competition output.",
+    "task_id": "synthetic-allocation"
+  },
+  "experiment_run_id": "XR-synthetic-allocation",
+  "figures": [
+    {
+      "data": "figures/values.csv",
+      "display_config": "figures/display.json",
+      "image": "figures/value-comparison.png",
+      "name": "allocation-values",
+      "plot_code": "figures/plot.py"
+    }
+  ],
+  "inputs": [],
+  "instances": [
+    {
+      "id": "known-gap",
+      "seed": null,
+      "status": "completed"
+    },
+    {
+      "id": "known-tie",
+      "seed": null,
+      "status": "completed"
+    },
+    {
+      "id": "deliberate-failure",
+      "seed": null,
+      "status": "failed"
+    }
+  ],
+  "issues": [],
+  "metrics": [
+    {
+      "definition": {
+        "aggregation": "mean",
+        "field": "baseline_value",
+        "name": "baseline_mean_value",
+        "unit": "value"
+      },
+      "denominator": {
+        "completed": 2,
+        "failed": 1,
+        "planned": 3
+      },
+      "name": "baseline_mean_value",
+      "raw_observation_count": 2,
+      "source": "observations.jsonl",
+      "unit": "value",
+      "value": 16.5
+    },
+    {
+      "definition": {
+        "aggregation": "mean",
+        "field": "alternative_value",
+        "name": "alternative_mean_value",
+        "unit": "value"
+      },
+      "denominator": {
+        "completed": 2,
+        "failed": 1,
+        "planned": 3
+      },
+      "name": "alternative_mean_value",
+      "raw_observation_count": 2,
+      "source": "observations.jsonl",
+      "unit": "value",
+      "value": 19.5
+    }
+  ],
+  "observations": "observations.jsonl",
+  "outcome": "partial",
+  "runtime": {
+    "attempt_no": 1,
+    "command": [
+      "/home/tensus/CodeRepo/MathModel/cumcm2026/agent_research/product/.venv/bin/python3",
+      "../input/inputs/demo/allocation.py",
+      "--config",
+      "../input/inputs/demo/allocation_config.json",
+      "--output",
+      "experiments/XR-synthetic-allocation"
+    ],
+    "ended_at": 1789231735.2448688,
+    "exit_code": 1,
+    "runtime_run_id": "754ddf494f4145e2a45a5512b53a33c7",
+    "started_at": 1789231734.7375455,
+    "task_id": "synthetic-allocation",
+    "task_state": "failed"
+  },
+  "schema_version": "execution-run-v1",
+  "usage": {
+    "cost": "unknown",
+    "external_calls": "unknown",
+    "wall_seconds": 0.5073232650756836
+  }
+}

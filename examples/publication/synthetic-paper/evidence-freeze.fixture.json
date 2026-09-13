@@ -1,0 +1,26 @@
+{
+  "freeze_id": "FZ-synthetic-publication-demo",
+  "consumer_id": "publication-demo",
+  "status": "ready",
+  "fixture": true,
+  "problem": {
+    "id": "synthetic-allocation",
+    "description": "Development demonstration only; not a competition problem."
+  },
+  "sources": [],
+  "datasets": [],
+  "claims": [],
+  "rules_sources": [
+    {
+      "id": "fixture-current-national-and-regional-rules",
+      "version": "development-interface-fixture",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+    }
+  ],
+  "result_refs": [
+    {
+      "experiment_run_id": "XR-synthetic-allocation",
+      "manifest_sha256": "e83f807ab904003c66faa97c5e7c2894e6b4d86c5aca08773e261d15616970b6"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": "publication-rules-v1",
+  "ruleset_id": "cumcm-development-demo-2026-09-13",
+  "description": "Development-only interpretation fixture. Replace and freeze from current national and regional sources before a real submission.",
+  "first_page_must_contain": "摘要",
+  "electronic_forbidden_first_page": ["承诺书", "编号专用页"],
+  "anonymous_terms": ["示例大学", "示例赛区", "参赛队员姓名"],
+  "max_body_pages": 30,
+  "max_pdf_mb": 20,
+  "max_overfull_pt": 1.0,
+  "print": {
+    "enabled": false
+  }
+}

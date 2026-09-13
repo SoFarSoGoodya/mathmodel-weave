@@ -1,0 +1,15 @@
+{
+  "label": "synthetic demonstration only; not competition output",
+  "planned_instances": [
+    {"id": "known-gap", "seed": null},
+    {"id": "known-tie", "seed": null},
+    {"id": "deliberate-failure", "seed": null}
+  ],
+  "metrics": [
+    {"name": "baseline_mean_value", "field": "baseline_value", "aggregation": "mean", "unit": "value"},
+    {"name": "alternative_mean_value", "field": "alternative_value", "aggregation": "mean", "unit": "value"}
+  ],
+  "constraints": [
+    {"name": "known-optimum-bound", "left_field": "alternative_value", "operator": "<=", "right_field": "known_optimum"}
+  ]
+}

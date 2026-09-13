@@ -1,0 +1,27 @@
+\documentclass[UTF8,a4paper,zihao=-4,fontset=none]{ctexart}
+\input{generated/build-meta.tex}
+\input{preamble.tex}
+\input{generated/results.tex}
+\input{generated/ai-usage.tex}
+\begin{document}
+\ifdefined\MMPrintTarget
+  \input{frontmatter/print-pages.tex}
+  \clearpage
+\fi
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\input{sections/00-summary.tex}
+\clearpage
+\DemoNotice
+\input{generated/section-inputs.tex}
+\section*{AI 工具使用声明}
+本文开发过程中使用了 \AIUsageRecordCount{} 条 AI 工具记录，主要用于结构整理、代码实现与文字检查。
+实际结果数值均由冻结运行清单确定性生成，AI 输出不作为数值证据。采纳、人工修改和核验情况见支撑材料
+《AI工具使用详情》。\ifx\AIUsageFixtureNotice\empty\else\par\textbf{说明：}\AIUsageFixtureNotice\fi
+\bibliographystyle{plain}
+\bibliography{references}
+\label{mmagent-body-end}
+\clearpage
+\appendix
+\input{appendix/support.tex}
+\end{document}

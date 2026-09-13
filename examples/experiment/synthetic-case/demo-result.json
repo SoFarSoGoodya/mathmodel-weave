@@ -1,0 +1,21 @@
+{
+  "experiment_request_ref": {
+    "task_id": "synthetic-allocation"
+  },
+  "run_manifest_refs": [
+    {
+      "artifact_id": "bundle-c1bc1228471a31baec78f4abf19faf555461edb0292db4cb955ee244f3cbcf85",
+      "sha256": "a413d502f896ff355bc3bf207dd1f5d851d99e92f9610abf87df7d205dc68cdb"
+    }
+  ],
+  "receipt_refs": [
+    "b64476a27ddfbd942bec1e5c967f40f7b9a499f7af7404dd8f7a6e8c86b75e66"
+  ],
+  "coverage": {
+    "planned": 3,
+    "completed": 2,
+    "failed": 1
+  },
+  "outcome": "partial",
+  "issues": []
+}

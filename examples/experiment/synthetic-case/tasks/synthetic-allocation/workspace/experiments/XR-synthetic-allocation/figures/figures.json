@@ -1,0 +1,9 @@
+[
+  {
+    "name": "allocation-values",
+    "image": "value-comparison.png",
+    "data": "values.csv",
+    "plot_code": "plot.py",
+    "display_config": "display.json"
+  }
+]

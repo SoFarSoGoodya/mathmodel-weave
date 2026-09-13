@@ -1,0 +1,9 @@
+{
+  "definition": {
+    "left_field": "alternative_value",
+    "name": "known-optimum-bound",
+    "operator": "<=",
+    "right_field": "known_optimum"
+  },
+  "violations": []
+}

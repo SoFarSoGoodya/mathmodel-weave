@@ -1,0 +1,56 @@
+\section{模型构造与求解方法}
+
+\subsection{0--1 分配模型}
+
+选择变量记为 $x_i\in\{0,1\}$。目标函数与容量约束共同构成
+\begin{equation}
+  \max_{\boldsymbol{x}}\quad V(\boldsymbol{x})=\sum_{i\in I}v_i x_i,
+  \qquad
+  \text{s.t.}\quad \sum_{i\in I}c_i x_i\leq C,
+  \quad x_i\in\{0,1\}.
+  \label{eq:knapsack}
+\end{equation}
+式~\eqref{eq:knapsack} 中，目标函数给出已选物品总价值，唯一资源约束保证总成本不超过当前实例容量。
+这一表达把自然语言任务转成可由两个算法共同读取的比较对象。
+
+\subsection{密度贪心基线}
+
+密度贪心法先计算 $r_i=v_i/c_i$，按 $r_i$ 从高到低扫描物品；若加入当前物品后仍满足容量约束，
+则令 $x_i=1$，否则跳过。其选择规则可写为
+\begin{equation}
+  x_{\pi(k)}=
+  \begin{cases}
+    1, & \displaystyle \sum_{j=1}^{k-1}c_{\pi(j)}x_{\pi(j)}+c_{\pi(k)}\leq C,\\[4pt]
+    0, & \text{其他情况},
+  \end{cases}
+  \qquad
+  r_{\pi(1)}\geq r_{\pi(2)}\geq\cdots\geq r_{\pi(n)}.
+  \label{eq:greedy}
+\end{equation}
+该方法计算快、解释直接，但局部最高密度不保证 $0$--$1$ 条件下的全局最优，因此需要与有限穷举结果比较。
+
+\subsection{有限穷举参照}
+
+对本演示的小规模实例，穷举法遍历幂集 $2^I$，只保留满足容量约束的子集，并取最大价值：
+\begin{equation}
+  V_E=\max_{S\subseteq I}
+  \left\{
+    \sum_{i\in S}v_i
+    \;\middle|\;
+    \sum_{i\in S}c_i\leq C
+  \right\}.
+  \label{eq:exhaustive}
+\end{equation}
+其时间复杂度随 $n$ 指数增长，因而在这里承担“已知有限搜索空间的精确参照”而非通用算法的角色。
+
+\subsection{比较指标与失败处理}
+
+设完整观测集合为 $K_c$，则方法 $m\in\{G,E\}$ 的报告均值为
+\begin{equation}
+  \bar V_m=\frac{1}{|K_c|}\sum_{k\in K_c}V_{m,k},
+  \qquad |K_c|=\RunCompleted.
+  \label{eq:complete-mean}
+\end{equation}
+失败实例不进入式~\eqref{eq:complete-mean} 的分子，但仍保留在计划覆盖
+$(n_c,n_f,n_p)=(\RunCompleted,\RunFailed,\RunPlanned)$ 中。该规则避免把失败记录误当作数值零，
+也避免把完整观测均值误称为三实例总体均值。

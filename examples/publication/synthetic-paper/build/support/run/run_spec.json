@@ -1,0 +1,57 @@
+{
+  "class": "formal",
+  "code": {
+    "path": "demo/allocation.py",
+    "sha256": "c201e4fe6e749405e5a1c98e243cca7c217b1b952c304e930d1c13885e946f1a"
+  },
+  "command_template": [
+    "/home/tensus/CodeRepo/MathModel/cumcm2026/agent_research/product/.venv/bin/python3",
+    "{code}",
+    "--config",
+    "{config}",
+    "--output",
+    "{output_dir}"
+  ],
+  "comparison_contract": {
+    "path": "demo/comparison_contract.json",
+    "sha256": "9c77bda8d3156e35a16327b136c504ca14ea91a533410fd3fb10188569f4e13c"
+  },
+  "config": {
+    "path": "demo/allocation_config.json",
+    "sha256": "be59e62a385be1572690ac46eda9e5ac20fe900142463ab62cf9c3c61f267bf3"
+  },
+  "environment": {
+    "platform": "linux",
+    "python": "3.12.3",
+    "uv_lock_sha256": "d6a1b5504a9a8659b30d5d9b18350bed82baef3ec18fa75b18872469d9b907a1"
+  },
+  "experiment_run_id": "XR-synthetic-allocation",
+  "inputs": [],
+  "instances": [
+    {
+      "id": "known-gap",
+      "seed": null
+    },
+    {
+      "id": "known-tie",
+      "seed": null
+    },
+    {
+      "id": "deliberate-failure",
+      "seed": null
+    }
+  ],
+  "purpose": "Synthetic allocation baseline-versus-optimum demonstration; not competition output.",
+  "runtime_command": [
+    "/home/tensus/CodeRepo/MathModel/cumcm2026/agent_research/product/.venv/bin/python3",
+    "../input/inputs/demo/allocation.py",
+    "--config",
+    "../input/inputs/demo/allocation_config.json",
+    "--output",
+    "experiments/XR-synthetic-allocation"
+  ],
+  "schema_version": "execution-spec-v1",
+  "submission_id": "experiment-XR-synthetic-allocation",
+  "task_id": "synthetic-allocation",
+  "timeout_seconds": 30
+}

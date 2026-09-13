@@ -1,0 +1,26 @@
+# Repository-owned CUMCM paper style. No third-party style parameters copied.
+font.family: sans-serif
+font.sans-serif: Noto Sans CJK SC, DejaVu Sans
+font.size: 8.5
+axes.labelsize: 8.5
+axes.titlesize: 9
+axes.linewidth: 0.7
+axes.spines.top: False
+axes.spines.right: False
+axes.grid: True
+axes.axisbelow: True
+grid.color: 0.85
+grid.linewidth: 0.45
+grid.alpha: 0.75
+lines.linewidth: 1.4
+lines.markersize: 4.8
+legend.fontsize: 7.5
+legend.frameon: False
+xtick.labelsize: 7.5
+ytick.labelsize: 7.5
+xtick.major.width: 0.7
+ytick.major.width: 0.7
+savefig.facecolor: white
+savefig.edgecolor: white
+pdf.fonttype: 42
+ps.fonttype: 42

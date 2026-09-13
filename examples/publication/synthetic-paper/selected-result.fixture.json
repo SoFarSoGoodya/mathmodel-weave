@@ -1,0 +1,19 @@
+{
+  "schema_version": "selected-result-v1",
+  "selected_result_id": "SR-synthetic-allocation-publication-demo",
+  "status": "demo_fixture",
+  "demonstration": true,
+  "approved": false,
+  "route": "density-greedy baseline compared with finite exhaustive optimum",
+  "scope": "Two completed deterministic synthetic instances; one deliberate failure retained.",
+  "risks": [
+    "The complete-case means describe only two instances.",
+    "Exhaustive enumeration is not a scalable solver recommendation.",
+    "This fixture does not represent live human selection or approval."
+  ],
+  "run_ref": {
+    "experiment_run_id": "XR-synthetic-allocation",
+    "manifest_sha256": "e83f807ab904003c66faa97c5e7c2894e6b4d86c5aca08773e261d15616970b6"
+  },
+  "rules_config_sha256": "dea638f7384d3a132f488319f193afa43c3147e3d6adf5e0521ec0ade4cf017a"
+}

@@ -1,0 +1,24 @@
+\section{支撑材料说明}
+
+本版本没有把源程序排入正文。完整可运行程序及其依赖锁定文件随候选包提供，目录如下：
+\small
+\begin{longtable}{p{0.43\linewidth}p{0.49\linewidth}}
+  \toprule
+  路径 & 内容\\
+  \midrule
+  \path{support/run/code/allocation.py} & 合成分配算法、观测写出和原始图生成程序\\
+  \path{support/run/config/allocation_config.json} & 三个计划实例及故意失败配置\\
+  \path{support/run/observations.jsonl} & 两个完整观测和一个失败记录\\
+  \path{support/run/run_manifest.json} & 正式运行、Metric、Figure、检查和使用事实总清单\\
+  \path{support/run/figures/values.csv} & 正式图使用的实例级数值\\
+  \path{support/run/figures/plot.py} & D4 原始绘图程序\\
+  \path{paper/figures/README.md} & 论文图号、问题、数据、脚本和可重绘说明\\
+  \path{support/run/uv.lock} & D4 运行环境依赖锁定\\
+  \texttt{AI工具使用详情.pdf} & 与论文声明同源生成的 AI 使用详情（本演示为明确夹具）\\
+  \bottomrule
+\end{longtable}
+\normalsize
+
+发布模块另有仓库自有的 \texttt{cumcm.mplstyle} 和重绘函数。它们只改变最终尺寸、字体、颜色、线型、
+marker、hatch 与布局。复杂诊断图的状态矩阵 artist 被选择性栅格化，线条和文字仍保留为 PDF 矢量对象。
+如果真实项目只能提供一张原始图片而缺少数据或脚本，图索引必须明确写为“不可重绘”，不得声称可复现。

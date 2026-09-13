@@ -1,0 +1,77 @@
+{
+  "artifact_id": "bundle-c1bc1228471a31baec78f4abf19faf555461edb0292db4cb955ee244f3cbcf85",
+  "content_id": "c1bc1228471a31baec78f4abf19faf555461edb0292db4cb955ee244f3cbcf85",
+  "files": [
+    {
+      "path": "checks/known-optimum-bound.json",
+      "sha256": "46707c41bd9fa3394c4df2467bcaf138c250e985bd1e18d7107e3c2af72f9de9",
+      "size": 177
+    },
+    {
+      "path": "code/allocation.py",
+      "sha256": "c201e4fe6e749405e5a1c98e243cca7c217b1b952c304e930d1c13885e946f1a",
+      "size": 3579
+    },
+    {
+      "path": "config/allocation_config.json",
+      "sha256": "be59e62a385be1572690ac46eda9e5ac20fe900142463ab62cf9c3c61f267bf3",
+      "size": 487
+    },
+    {
+      "path": "contracts/comparison_contract.json",
+      "sha256": "9c77bda8d3156e35a16327b136c504ca14ea91a533410fd3fb10188569f4e13c",
+      "size": 603
+    },
+    {
+      "path": "figures/display.json",
+      "sha256": "41b3f12fced93c050d413017dedef117ad05639f3a5937de037afbb1b17023e9",
+      "size": 114
+    },
+    {
+      "path": "figures/figures.json",
+      "sha256": "2313ebd2ff2e651eb5696717bd92317f8e13bc146b50179888f962a89b471642",
+      "size": 173
+    },
+    {
+      "path": "figures/plot.py",
+      "sha256": "c201e4fe6e749405e5a1c98e243cca7c217b1b952c304e930d1c13885e946f1a",
+      "size": 3579
+    },
+    {
+      "path": "figures/value-comparison.png",
+      "sha256": "8942494635047f92992479e1ace7ebaa4a965b462417ea81f122d67a03dad4cf",
+      "size": 30973
+    },
+    {
+      "path": "figures/values.csv",
+      "sha256": "999c127e74db36d10f6b77b8fd10c3fba2d90bb48a6030d4062a2dceb0ccccf4",
+      "size": 80
+    },
+    {
+      "path": "metrics.json",
+      "sha256": "24211c140dac83c3aa2e00b0c17cacfd5b8ce5206acedde9f26cc1d96179d32a",
+      "size": 941
+    },
+    {
+      "path": "observations.jsonl",
+      "sha256": "6d7bca65d703c14c9eacd6fbe5a33eabd83331eb2a073e19346a27349470bada",
+      "size": 340
+    },
+    {
+      "path": "run_manifest.json",
+      "sha256": "e83f807ab904003c66faa97c5e7c2894e6b4d86c5aca08773e261d15616970b6",
+      "size": 3569
+    },
+    {
+      "path": "run_spec.json",
+      "sha256": "6758c56b160bae55a3e9975f6643e2a963c411116544859eda2fe73dc9466dc3",
+      "size": 1631
+    },
+    {
+      "path": "uv.lock",
+      "sha256": "d6a1b5504a9a8659b30d5d9b18350bed82baef3ec18fa75b18872469d9b907a1",
+      "size": 137579
+    }
+  ],
+  "schema_version": 1
+}

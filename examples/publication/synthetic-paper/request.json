@@ -1,0 +1,14 @@
+{
+  "schema_version": "publication-request-v1",
+  "publication_id": "PUB-synthetic-allocation-demo-v1",
+  "title": "有限容量合成分配的可核验建模与发布演示",
+  "keywords": ["0--1 分配", "贪心算法", "穷举验证", "结果追溯", "合成演示"],
+  "demonstration": true,
+  "selected_result": "examples/publication/synthetic-paper/selected-result.fixture.json",
+  "evidence_freeze": "examples/publication/synthetic-paper/evidence-freeze.fixture.json",
+  "run_manifest": "examples/experiment/synthetic-case/artifacts/bundle-c1bc1228471a31baec78f4abf19faf555461edb0292db4cb955ee244f3cbcf85/run_manifest.json",
+  "rules": "examples/publication/synthetic-paper/rules.json",
+  "paper_material": "examples/publication/synthetic-paper/material",
+  "ai_usage": "examples/publication/synthetic-paper/ai-usage.fixture.json",
+  "output_dir": "examples/publication/synthetic-paper/build"
+}

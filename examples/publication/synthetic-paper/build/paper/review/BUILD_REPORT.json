@@ -1,0 +1,152 @@
+{
+  "ai_details_pdf": "AI工具使用详情.pdf",
+  "ai_pdf": {
+    "bytes": 43728,
+    "fonts": {
+      "font_count": 5,
+      "not_embedded": []
+    },
+    "pages": 1,
+    "rendered_pages": [
+      "page-1.png"
+    ],
+    "sha256": "fa1d5d4002bef26ee4f55288f41e83853a04043aacade49ab1c705bd58607f57",
+    "text_characters": 746
+  },
+  "ai_usage": {
+    "fixture": true,
+    "notice": "开发演示夹具：以下采纳与核验描述仅用于验证发布接口，不代表真实参赛论文或人工批准。",
+    "record_count": 1
+  },
+  "body_end_page": 7,
+  "builds": {
+    "ai_details": {
+      "command": "latexmk -xelatex -interaction=nonstopmode -halt-on-error -file-line-error -jobname=ai-usage-details ai-details.tex",
+      "latexmk_output_tail": "ex\n(./ai-usage-details.out) (./ai-usage-details.out)\nUnderfull \\hbox (badness 10000) in alignment at lines 28--32\n[] [] [] [] [] [] []\n\nUnderfull \\hbox (badness 10000) in alignment at lines 32--36\n[] [] [] [] [] [] []\n\nUnderfull \\hbox (badness 10000) in alignment at lines 36--39\n[] [] [] [] [] [] []\n[1] (./ai-usage-details.aux) )\n(see the transcript file for additional information)\nOutput written on ai-usage-details.xdv (1 page, 6868 bytes).\nTranscript written on ai-usage-details.log.\nLatexmk: Getting log file 'ai-usage-details.log'\nLatexmk: Examining 'ai-usage-details.fls'\nLatexmk: Examining 'ai-usage-details.log'\nLatexmk: Log file says output to 'ai-usage-details.xdv'\nLatexmk: applying rule 'xdvipdfmx'...\nRule 'xdvipdfmx':  Reasons for rerun\nChanged files or newly in use/created:\n  ai-usage-details.xdv\nCategory 'changed_source_rules':\n  xelatex\nCategory 'no_dest':\n  xdvipdfmx\n\n------------\nRun number 1 of rule 'xdvipdfmx'\n------------\n------------\nRunning 'xdvipdfmx -E -o \"ai-usage-details.pdf\"  \"ai-usage-details.xdv\"'\n------------\nLatexmk: All targets (ai-usage-details.xdv ai-usage-details.pdf) are up-to-date\n\nai-usage-details.xdv -> ai-usage-details.pdf\n[1]\n43728 bytes written\n",
+      "log": "ai-usage-details-latexmk.log",
+      "overfull": []
+    },
+    "electronic": {
+      "command": "latexmk -xelatex -interaction=nonstopmode -halt-on-error -file-line-error -jobname=paper-electronic main.tex",
+      "latexmk_output_tail": "[]|$[][][][][][][] [] [][][] [] [][][][][][] [] [][][][][][][][][][] []\n) [8] (./paper-electronic.aux) )\n(see the transcript file for additional information)\nOutput written on paper-electronic.xdv (8 pages, 89868 bytes).\nTranscript written on paper-electronic.log.\nLatexmk: Getting log file 'paper-electronic.log'\nLatexmk: Examining 'paper-electronic.fls'\nLatexmk: Examining 'paper-electronic.log'\nLatexmk: Found input bbl file 'paper-electronic.bbl'\nLatexmk: Log file says output to 'paper-electronic.xdv'\nLatexmk: Found bibliography file(s):\n  ./references.bib\nLatexmk: applying rule 'xdvipdfmx'...\nRule 'xdvipdfmx':  Reasons for rerun\nChanged files or newly in use/created:\n  paper-electronic.xdv\nCategory 'changed_source_rules':\n  xelatex\nCategory 'no_dest':\n  xdvipdfmx\n\n------------\nRun number 1 of rule 'xdvipdfmx'\n------------\n------------\nRunning 'xdvipdfmx -E -o \"paper-electronic.pdf\"  \"paper-electronic.xdv\"'\n------------\nLatexmk: All targets (paper-electronic.xdv paper-electronic.pdf) are up-to-date\n\nLatexmk: Missing bbl file 'paper-electronic.bbl' in following:\n No file paper-electronic.bbl.\npaper-electronic.xdv -> paper-electronic.pdf\n[1][2][3][4][5][6][7][8]\n263239 bytes written\n",
+      "log": "paper-electronic-latexmk.log",
+      "overfull": []
+    },
+    "print": null
+  },
+  "checks": [
+    "selected result and evidence freeze match the exact run manifest SHA-256",
+    "official/regional rule source is present and the rule config hash is selected",
+    "result macros and table rows were generated deterministically from the manifest",
+    "figure rows match complete saved observations; no undefined interval was drawn",
+    "citation keys, placeholders, first-page rules, anonymity terms, critical numbers, PDF size, fonts, and text layer passed",
+    "every electronic PDF page was rasterized for visual inspection"
+  ],
+  "citations": {
+    "available": [
+      "D4SyntheticRun"
+    ],
+    "cited": [
+      "D4SyntheticRun"
+    ],
+    "unused": []
+  },
+  "demonstration": true,
+  "electronic_pdf": "paper-electronic.pdf",
+  "figures": [
+    {
+      "output": "allocation-comparison.pdf",
+      "question": "两种方法在每个完成实例上的目标值及差距是多少？",
+      "redrawable": true,
+      "sha256": "e08905dc8713300b985afc8e4a7114bc4ac3376bf3759bdd5b2101f16a3fc590",
+      "source_data": "figures/values.csv",
+      "source_display_config": "figures/display.json",
+      "source_plot_code": "figures/plot.py"
+    },
+    {
+      "output": "allocation-diagnostics.pdf",
+      "question": "原始观测、描述性差距与部分运行覆盖如何共同解释？",
+      "redrawable": true,
+      "sha256": "bc2a7bb93a29491c9fd1829f34f77c035eeff236ba923277c25ec306e3848b40",
+      "source_data": "figures/values.csv",
+      "source_display_config": "figures/display.json",
+      "source_plot_code": "figures/plot.py"
+    }
+  ],
+  "limitations": [
+    "review_ready still requires actual inspection of every rendered page; compilation alone is insufficient",
+    "the included specialized redraw handles the allocation demonstration; new scientific figure schemas require a task-specific renderer or an honestly disclosed original-image adoption",
+    "the rule config is a frozen project interpretation and must be updated from current official and regional sources for each competition",
+    "demonstration AI adoption facts are interface fixtures and do not represent live human approval"
+  ],
+  "manifest_sha256": "e83f807ab904003c66faa97c5e7c2894e6b4d86c5aca08773e261d15616970b6",
+  "metrics": {
+    "coverage": {
+      "completed": 2,
+      "failed": 1,
+      "planned": 3
+    },
+    "experiment_run_id": "XR-synthetic-allocation",
+    "macros": {
+      "AlternativeMeanValue": "19.5",
+      "BaselineMeanValue": "16.5"
+    },
+    "manifest_sha256": "e83f807ab904003c66faa97c5e7c2894e6b4d86c5aca08773e261d15616970b6",
+    "outcome": "partial"
+  },
+  "pdf": {
+    "bytes": 263239,
+    "fonts": {
+      "font_count": 21,
+      "not_embedded": []
+    },
+    "metadata": {
+      "Author": null,
+      "Creator": "LaTeX with hyperref",
+      "Producer": "xdvipdfmx (20220710)",
+      "Title": "有限容量合成分配的可核验建模与发布演示"
+    },
+    "page_size": "595.28 x 841.89 pts (A4)",
+    "pages": 8,
+    "rendered_pages": [
+      "page-1.png",
+      "page-2.png",
+      "page-3.png",
+      "page-4.png",
+      "page-5.png",
+      "page-6.png",
+      "page-7.png",
+      "page-8.png"
+    ],
+    "sha256": "7754c52d3066d5204807b599a67e825082360d890c41dcb7b975c5425c1ef10f",
+    "text_characters": 10259
+  },
+  "print_pdf": null,
+  "publication_id": "PUB-synthetic-allocation-demo-v1",
+  "sections": [
+    "01-problem.tex",
+    "02-model.tex",
+    "03-results.tex",
+    "04-verification.tex",
+    "05-evaluation.tex"
+  ],
+  "status": "review_ready",
+  "visual_review": {
+    "notes": [
+      "最终零 overfull 版本逐页检查 1--8 页：无重叠、裁切、缺字或异常分页。",
+      "摘要独占第一页；公式、生成 Metric 表、两类正式图、跨页追溯表、AI 声明、参考文献和附录均清晰可读。",
+      "颜色之外使用 marker、线型、hatch 和状态文字；未绘制运行包没有定义的误差区间。",
+      "AI 工具使用详情最终页已检查：七列表格位于版心内，开发夹具披露清晰，无 overfull。"
+    ],
+    "pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ]
+  }
+}

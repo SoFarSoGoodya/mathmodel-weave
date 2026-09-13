@@ -1,0 +1,17 @@
+# MathModel Weave case configuration. Do not put credentials here.
+[runtime]
+local_slots = 2
+poll_interval = 0.25
+
+[policy]
+sandbox = "workspace-write"
+allow_network = false
+allowed_extra_write_paths = []
+
+[profiles.default]
+model = "gpt-5.6-sol"
+effort = "high"
+# codex_profile = "provider-profile-name"
+
+[tools]
+# exa = "exa"

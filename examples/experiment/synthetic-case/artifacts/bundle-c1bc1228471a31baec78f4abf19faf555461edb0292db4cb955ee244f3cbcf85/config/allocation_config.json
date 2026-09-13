@@ -1,0 +1,14 @@
+{
+  "label": "synthetic demonstration only; not competition output",
+  "instances": [
+    {
+      "id": "known-gap", "capacity": 10, "known_optimum": 18,
+      "items": [{"cost": 6, "value": 12}, {"cost": 5, "value": 9}, {"cost": 5, "value": 9}]
+    },
+    {
+      "id": "known-tie", "capacity": 11, "known_optimum": 21,
+      "items": [{"cost": 6, "value": 12}, {"cost": 5, "value": 9}, {"cost": 5, "value": 9}]
+    },
+    {"id": "deliberate-failure", "deliberate_failure": true}
+  ]
+}
