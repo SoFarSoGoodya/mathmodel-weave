@@ -1,6 +1,6 @@
 # 来源与借鉴
 
-本页是产品侧的简要说明。完整的独立调查、版本、证据等级和取舍记录位于独立的[研究仓库](https://github.com/<your-org>/mathmodel-research)，产品运行不依赖研究仓库。
+本页是产品侧的简要说明。完整的独立调查、版本、证据等级和取舍记录位于独立的[研究仓库](https://github.com/SoFarSoGoodya/mathmodel-research)，产品运行不依赖研究仓库。
 
 | 来源体系 | 主要借鉴 | 产品位置 |
 | --- | --- | --- |

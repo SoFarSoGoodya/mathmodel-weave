@@ -1,6 +1,6 @@
 # MathModel Weave: Mathematical Modeling Multi-Agent Workbench
 
-This is the standalone `mathmodel-weave` product repository. Architecture research, source evidence, and fusion decisions live in the independent [research repository](https://github.com/<your-org>/mathmodel-research); that repository is not a runtime dependency. Replace `<your-org>` with your GitHub account or organization when publishing.
+This is the standalone `mathmodel-weave` product repository. Architecture research, source evidence, and fusion decisions live in the independent [research repository](https://github.com/SoFarSoGoodya/mathmodel-research); that repository is not a runtime dependency. Replace `SoFarSoGoodya` with your GitHub account or organization when publishing.
 
 ## What makes it different
 

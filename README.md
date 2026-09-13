@@ -1,6 +1,6 @@
 # MathModel Weave：数学建模多智能体工作台
 
-本产品仓库是一个可独立运行的数学建模工作台。对应的框架逆向分析、来源证据和融合决策保存在独立的[研究仓库](https://github.com/<your-org>/mathmodel-research)；研究仓库不属于运行依赖。发布到 GitHub 时，只需把链接中的 `<your-org>` 换成你的账号或组织名。
+本产品仓库是一个可独立运行的数学建模工作台。对应的框架逆向分析、来源证据和融合决策保存在独立的[研究仓库](https://github.com/SoFarSoGoodya/mathmodel-research)；研究仓库不属于运行依赖。发布到 GitHub 时，只需把链接中的 `SoFarSoGoodya` 换成你的账号或组织名。
 
 ## 项目特点
 
