@@ -1,6 +1,6 @@
 # MathModel Weave: Mathematical Modeling Multi-Agent Workbench
 
-This is the standalone `mathmodel-weave` product repository. Architecture research, source evidence, and fusion decisions live in the independent [research repository](https://github.com/SoFarSoGoodya/mathmodel-research); that repository is not a runtime dependency. Replace `SoFarSoGoodya` with your GitHub account or organization when publishing.
+This is the standalone `mathmodel-weave` product repository. Architecture research, source evidence, and fusion decisions live in the independent [research repository](https://github.com/SoFarSoGoodya/mathmodel-research); that repository is only a research document reference, not a runtime dependency.
 
 ## What makes it different
 
@@ -13,14 +13,14 @@ Skill-only math tools usually lack a recoverable collaboration runtime. Generic 
 
 ## Six modules
 
-| Layer | Module | Responsibility | Main artifacts |
-| --- | --- | --- | --- |
-| Runtime and governance | `runtime` | Launch managed tasks, persist process/session state, and perform bounded recovery | task state, events, attempts |
-| Runtime and governance | `control` | Record permissions, research tier, human questions, and decisions | decisions, permissions, approvals |
-| Skill and process | `evidence` | Ingest PDF/XLSX, correct the problem statement, manage evidence, and freeze cited versions | source text, registry, freeze |
-| Skill and process | `exploration` | Produce independent candidate routes and comparison contracts | candidates, comparisons |
-| Skill and process | `execution` | Run declared code and inputs, recording metrics, failures, and checks | manifests, metrics, checks |
-| Skill and process | `publication` | Assemble figures, TeX, references, AI-use details, and exact release bundles | paper, figures, release bundle |
+| Layer                  | Module        | Responsibility                                                                             | Main artifacts                    |
+| ---------------------- | ------------- | ------------------------------------------------------------------------------------------ | --------------------------------- |
+| Runtime and governance | `runtime`     | Launch managed tasks, persist process/session state, and perform bounded recovery          | task state, events, attempts      |
+| Runtime and governance | `control`     | Record permissions, research tier, human questions, and decisions                          | decisions, permissions, approvals |
+| Skill and process      | `evidence`    | Ingest PDF/XLSX, correct the problem statement, manage evidence, and freeze cited versions | source text, registry, freeze     |
+| Skill and process      | `exploration` | Produce independent candidate routes and comparison contracts                              | candidates, comparisons           |
+| Skill and process      | `execution`   | Run declared code and inputs, recording metrics, failures, and checks                      | manifests, metrics, checks        |
+| Skill and process      | `publication` | Assemble figures, TeX, references, AI-use details, and exact release bundles               | paper, figures, release bundle    |
 
 The runtime layer answers who runs with which permissions and how state resumes. The skill layer answers how each modeling step is performed and accepted. They exchange case-relative files, manifests, checks, and human decisions.
 
@@ -38,7 +38,7 @@ You need Linux or WSL, Python, `uv`, and XeLaTeX for paper output. If you are ne
 1. Open Codex in this repository and start one main conversation. Luna/medium is recommended for everyday guidance.
 2. Send this short prompt:
 
-   > Read `AGENTS.md`, `docs/guide.md`, `docs/setup.md`, and `docs/status.md` first. Act as the coordinator for this project: check my environment and tell me what is missing, guide me through preparing the problem, then start and manage the background agents, track their state, and ask me only for decisions. I will work through the conversation and will not operate the underlying code or CLI myself.
+    > Read `AGENTS.md`, `docs/guide.md`, `docs/setup.md`, and `docs/status.md` first. Act as the coordinator for this project: check my environment and tell me what is missing, guide me through preparing the problem, then start and manage the background agents, track their state, and ask me only for decisions. I will work through the conversation and will not operate the underlying code or CLI myself.
 
 3. Answer the coordinator's questions, provide the problem files, choose a research tier, and confirm the problem statement. The coordinator continues the managed work and asks when a human decision is required.
 
