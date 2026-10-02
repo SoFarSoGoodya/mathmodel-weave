@@ -4,7 +4,21 @@
 
 本产品仓库是一个可独立运行的数学建模工作台。对应的框架逆向分析、来源证据和融合决策保存在独立的[研究仓库](https://github.com/SoFarSoGoodya/mathmodel-research)；研究仓库不属于运行依赖。
 
-## 项目特点
+**目录**
+
+- [1. 项目特点](#1-项目特点)
+- [2. 六大模块](#2-六大模块)
+- [3. 快速开始](#3-快速开始)
+- [4. fast / standard / full 怎么选](#4-fast--standard--full-怎么选)
+- [5. 从题目到提交包](#5-从题目到提交包)
+- [6. 人机协作](#6-人机协作)
+- [7. 多 agent 如何真实运行](#7-多-agent-如何真实运行)
+- [8. 目录结构](#8-目录结构)
+- [9. 文档导航](#9-文档导航)
+- [10. 来源与许可](#10-来源与许可)
+- [11. 已实现与当前边界](#11-已实现与当前边界)
+
+## 1. 项目特点
 
 本项目同时提供两层能力：
 
@@ -13,7 +27,7 @@
 
 中文数学建模领域的工具主要集中在 skill 流程上，给出了不同建模阶段的明确约束与操作指导，但较为缺乏可恢复的多 agent 协作运行时，典型例子包括 [MathModel-Skill](https://github.com/yushui2022/MathModel-Skill)、[MathModelAgent](https://github.com/jihe520/MathModelAgent) 以及基于 MathModelAgent 开发的 [MathMN](https://github.com/ShuoSachiko/MathMN)。而 AI for Math/应用数学领域的工具主要提供通用的 agent 编排，例如主攻纯数学多 agent 协作探索的 [Danus](https://github.com/frenzymath/Danus)、应用数学科研的 [ReasFlow](https://github.com/reaslab/ReasFlow) 和 [Station](https://github.com/dualverse-ai/station)，但针对特定的建模比赛项目，往往缺乏所需的题意校正、路线比较、证据冻结和论文验收。本项目深度挖掘并参考了这六个项目，把两层能力放在同一套 case 协议中，同时保留 agent 探索层面的自由开发，以及流程层面的 skill 外部约束和人类决策与介入。
 
-## 六大模块
+## 2. 六大模块
 
 | 层           | 模块          | 作用                                                        | 主要产物                       |
 | ------------ | ------------- | ----------------------------------------------------------- | ------------------------------ |
@@ -47,7 +61,7 @@ flowchart TB
 
 图中的主沟通会话与受管 `main` 任务有不同职责：前者向用户解释并操作已有 CLI，后者在独立 provider session 中规划和派发建模任务。`workflow` 是确定性的交接代码；它读取受管 coordinator 的 `RESULT.json`，检查权限和人工决定，等待子任务或真人回答后，再续接同一个受管 session。产品没有额外常驻聊天服务或文件监听器。
 
-## 快速开始
+## 3. 快速开始
 
 支持原生 Windows 11 与 Linux/WSL。需要 Python 3.12+、`uv` 和可用的 Codex CLI；Windows 可直接使用 PowerShell，无需为进程监督器安装 WSL。Windows 专用依赖 `pywin32` 由 `uv sync --locked` 自动安装；论文阶段仍需要 XeLaTeX、latexmk、CTeX/xeCJK、中文字体、BibTeX 和 Poppler。Windows 安装与针对性验证范围见[环境配置](docs/zh/setup.md)和[当前状态](docs/zh/status.md)。
 
@@ -72,7 +86,7 @@ rtk uv run mmagent init CASE
 
 手动命令、配置文件、MinerU 外部预处理和故障处理见 [环境配置](docs/setup.md) 与 [命令参考](docs/cli.md)。内置 PDF/XLSX 读取使用 `pypdf` 和 `openpyxl`；扫描 PDF 可先用外部 OCR 或 MinerU 处理，本产品当前不包含 MinerU SDK 适配器。
 
-## fast / standard / full 怎么选
+## 4. fast / standard / full 怎么选
 
 三档表示希望投入的研究深度。下表是与协调助手约定工作的选档指南，具体路线数、实验范围、停止条件和预算须按题目说明并由人确认。
 
@@ -86,7 +100,7 @@ rtk uv run mmagent init CASE
 
 实现上，`ask-tier` 展示题面路径/hash 和该档 profile 的 `model/effort`；用户批准后，`start` 校验档位、题面和 profile 未变。`case.toml` 中同名 profile 是具体模型配置，示例中的历史模型名需要用户在本机核实或调整。选档不会发现或安装模型，也没有内置固定路线数量、token 硬预算或自动消费上限。研究授权 `scope/bounds` 是工作范围检查，与 Codex 的进程 sandbox、网络和写目录配置分别生效。
 
-## 从题目到提交包
+## 5. 从题目到提交包
 
 ```mermaid
 flowchart TD
@@ -119,7 +133,7 @@ flowchart TD
 
 先计算和留证，再把已选定的科学结果写入论文。机器检查通过只表示约定的检查通过；页面审阅完成也仍需要最终真人批准。
 
-## 人机协作
+## 6. 人机协作
 
 把 Codex 主会话当作唯一入口即可。你负责说明目标、回答问题和作出决定；协调助手负责检查配置、初始化 case、启动和管理后台 agent、在断流或中断后按规则重试/恢复、读取最新状态，并把需要你确认的内容用自然语言说清楚。你不需要记住后台 agent 的名称，也不需要手动反复执行 CLI 命令。
 
@@ -127,7 +141,7 @@ flowchart TD
 
 如果你直接编辑了 case 中的 Markdown，只需告诉助手“我已更新文件，请读取最新内容”。账号密钥和模型配置由 Codex 管理，不要写进仓库或 case 文件。
 
-## 多 agent 如何真实运行
+## 7. 多 agent 如何真实运行
 
 这些机制属于本产品运行时，不要求用户直接操作命令：
 
@@ -142,7 +156,7 @@ flowchart TD
 
 监督器重启会核对保存的进程身份、事件和状态，处理仍存活或已结束的 attempt；超时与取消按进程组终止。迁移后若原 provider history 不可用，助手应从已保存产物建立新任务接续，不能冒充旧 session 续跑。题面或已批准模型/profile 变化须重新确认。研究 `scope` 是工作授权边界，独立任务目录也不等于 OS 隔离；实际 sandbox、网络和写目录限制由 Codex 配置承担。
 
-## 目录结构
+## 8. 目录结构
 
 产品仓库只交付通用能力，题目与运行数据另存于用户管理的 case；下列产品目录均为实际跟踪的内容。
 
@@ -176,7 +190,7 @@ mathmodel-weave/
 
 开发维护应从仓库文件恢复，不依赖本轮主会话或任何旧 session。迁移开发环境请先读 [docs/zh/dev.md](docs/zh/dev.md) / [docs/dev.md](docs/dev.md)；case 备份与 provider history 是不同的迁移对象。
 
-## 文档导航
+## 9. 文档导航
 
 - [用户指南](docs/zh/guide.md)：第一次使用、交题、确认和恢复。
 - [环境配置](docs/zh/setup.md)：依赖、模型、MCP、TeX 和可选预处理。
@@ -190,7 +204,7 @@ mathmodel-weave/
 
 目录中的 `skills/` 是流程约束与任务说明，`mathmodel_agent/` 是运行时代码，`templates/` 是论文和发布模板，`examples/` 是合成示例。研究记录、上游源码和下载的 skill 包不是运行或开发前提。
 
-## 来源与许可
+## 10. 来源与许可
 
 本项目尊重并研究了 [Danus](https://github.com/frenzymath/Danus)、[ReasFlow](https://github.com/reaslab/ReasFlow)、[Station](https://github.com/dualverse-ai/station)、[MathModelAgent](https://github.com/jihe520/MathModelAgent)、[MathMN](https://github.com/ShuoSachiko/MathMN) 和 [MathModel-Skill](https://github.com/yushui2022/MathModel-Skill) 六个独立项目。它们提供了可借鉴的角色协作、会话恢复、建模流程、证据管理和论文约束；本仓库重新实现自己的接口，不默示复制或继承上游许可证。来源映射见 [docs/origins.md](docs/origins.md)，法律条款见 [LICENSE](LICENSE)、[NOTICE.md](NOTICE.md) 和 [licenses/](licenses/)。
 
@@ -205,7 +219,7 @@ mathmodel-weave/
 
 这是机制来源映射，不代表原样移植上游协议、平台或全部功能。这里的三档属于本产品的工作约定与授权/profile 绑定，不等于上游的 Lite/Flash/Standard/Pro 分支。研究仓库保留更完整的版本、证据等级与取舍，产品运行和后续开发不需要旧研究会话、上游 checkout 或下载的 skill 包。
 
-## 已实现与当前边界
+## 11. 已实现与当前边界
 
 已有代码覆盖文件式 case、CLI 生命周期、独立 Codex/命令任务、持久化状态、有限重试、人工决定、证据登记与冻结、候选比较、实验 manifest，以及 TeX/PDF 的构建、审阅记录和精确包导出。[ACCEPTANCE.md](ACCEPTANCE.md) 保存基础流程与合成演示的验收证据；它不等于真实竞赛的完整实战验收。
 

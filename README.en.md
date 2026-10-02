@@ -4,7 +4,21 @@
 
 This is the standalone `mathmodel-weave` product repository. Architecture research, source evidence, and fusion decisions live in the independent [research repository](https://github.com/SoFarSoGoodya/mathmodel-research); that repository is only a research document reference, not a runtime dependency.
 
-## What makes it different
+**Table of Contents**
+
+- [1. What makes it different](#1-what-makes-it-different)
+- [2. Six modules](#2-six-modules)
+- [3. Choosing fast / standard / full](#3-choosing-fast--standard--full)
+- [4. Quick start](#4-quick-start)
+- [5. From problem to submission package](#5-from-problem-to-submission-package)
+- [6. Human collaboration](#6-human-collaboration)
+- [7. How multiple agents actually run](#7-how-multiple-agents-actually-run)
+- [8. Directory layout](#8-directory-layout)
+- [9. Documentation](#9-documentation)
+- [10. Sources and license](#10-sources-and-license)
+- [11. Implemented capabilities and current limits](#11-implemented-capabilities-and-current-limits)
+
+## 1. What makes it different
 
 The product combines two layers:
 
@@ -13,7 +27,7 @@ The product combines two layers:
 
 Chinese mathematical modeling tools emphasize skills that guide individual stages, with less support for a recoverable multi-agent runtime. Examples include [MathModel-Skill](https://github.com/yushui2022/MathModel-Skill), [MathModelAgent](https://github.com/jihe520/MathModelAgent), and its derivative [MathMN](https://github.com/ShuoSachiko/MathMN). AI-for-math and applied-mathematics tools emphasize general agent coordination: [Danus](https://github.com/frenzymath/Danus) explores pure mathematics, while [ReasFlow](https://github.com/reaslab/ReasFlow) and [Station](https://github.com/dualverse-ai/station) support applied-mathematics research. A competition case additionally needs problem correction, route comparison, evidence freezing, and paper acceptance. This project studies all six and brings both layers into one case protocol, preserving open-ended exploration, external skill constraints, and human intervention.
 
-## Six modules
+## 2. Six modules
 
 | Layer                  | Module        | Responsibility                                                                             | Main artifacts                    |
 | ---------------------- | ------------- | ------------------------------------------------------------------------------------------ | --------------------------------- |
@@ -47,7 +61,7 @@ flowchart TB
 
 The user-facing conversation explains the work and operates existing CLI commands. The managed `main` task plans and dispatches work in its own provider session. `workflow` is deterministic handoff code: it reads that task's `RESULT.json`, checks authorization and human decisions, waits for dependencies or answers, then continues the same managed session. There is no additional resident chat service or file watcher.
 
-## Choosing fast / standard / full
+## 3. Choosing fast / standard / full
 
 The tiers express the desired research depth. This table guides your agreement with the coordinator; route counts, experiment scope, stopping conditions, and budget need a problem-specific explanation and human confirmation.
 
@@ -61,7 +75,7 @@ All tiers retain real evidence, actual execution, failure records, human decisio
 
 `ask-tier` displays the problem path/hash and the selected profile's `model/effort`; after approval, `start` checks that the tier, problem and profile have not changed. Same-named profiles in `case.toml` are concrete model settings. Historical model names in examples need local verification or adjustment. Selecting a tier does not discover or install models, and no fixed route count, token budget or spending cap is built in. Research `scope/bounds` checks govern work authorization separately from Codex sandbox, network and writable-directory settings.
 
-## Quick start
+## 4. Quick start
 
 Native Windows 11 and Linux/WSL are supported. You need Python 3.12+, `uv` and a working Codex CLI; Windows can use PowerShell without installing WSL for the supervisor. `uv sync --locked` installs the Windows-only `pywin32` dependency automatically. Paper output still needs XeLaTeX, latexmk, CTeX/xeCJK, CJK fonts, BibTeX and Poppler. See [setup](docs/setup.md) and [status](docs/status.md) for Windows setup and focused verification scope.
 
@@ -86,7 +100,7 @@ rtk uv run mmagent init CASE
 
 See [setup](docs/setup.md) and the [CLI reference](docs/cli.md) for configuration, optional MinerU/OCR preprocessing, and troubleshooting. Built-in PDF/XLSX intake uses `pypdf` and `openpyxl`; this release has no MinerU SDK adapter.
 
-## From problem to submission package
+## 5. From problem to submission package
 
 ```mermaid
 flowchart TD
@@ -119,7 +133,7 @@ This describes work organization; the problem and approved scope determine the t
 
 Compute and preserve evidence before writing selected scientific results into the paper. Passing machine checks means the declared checks passed; completed page review still requires final human approval.
 
-## Human collaboration
+## 6. Human collaboration
 
 Use the Codex main conversation as the single entry point. You describe goals, answer questions, and make decisions. The coordinator checks configuration, initializes cases, starts and manages background agents, retries or resumes interrupted work according to project rules, reads current state, and explains decisions in plain language. You do not need to remember agent names or repeatedly run CLI commands.
 
@@ -127,7 +141,7 @@ At the start of a case, send the short prompt above. Then confirm the problem st
 
 If you edit a case Markdown file, tell the coordinator: “I updated the file; please read the latest content.” Keep credentials and model settings in Codex configuration, never in the repository or case files.
 
-## How multiple agents actually run
+## 7. How multiple agents actually run
 
 These mechanisms belong to the runtime; users can leave command operation to the coordinator:
 
@@ -142,7 +156,7 @@ Transient network/rate-limit failures receive bounded retries in the same sessio
 
 After restart, the supervisor reconciles saved process identities, events and states, including surviving or finished attempts; timeout and cancellation terminate process groups. If original provider history is unavailable after migration, the assistant should create a new task from preserved artifacts rather than claim an old session resumed. Changes to the problem or approved model/profile require renewed confirmation. Research `scope` governs work authorization; separate task directories do not themselves provide OS isolation. Codex configuration supplies sandbox, network and writable-directory controls.
 
-## Directory layout
+## 8. Directory layout
 
 The product ships reusable capabilities. Problem files and runtime data belong in a separately managed case. Product entries below are tracked repository contents.
 
@@ -176,7 +190,7 @@ Separately managed CASE/
 
 Developer maintenance resumes from repository files, without requiring this conversation or an old session. For a new system, read [docs/dev.md](docs/dev.md) / [docs/zh/dev.md](docs/zh/dev.md) first. Case backups and provider history are separate migration objects.
 
-## Documentation
+## 9. Documentation
 
 - [User guide](docs/guide.md)
 - [Setup](docs/setup.md) · [CLI](docs/cli.md)
@@ -187,7 +201,7 @@ Developer maintenance resumes from repository files, without requiring this conv
 
 `skills/` contains process contracts, `mathmodel_agent/` contains runtime code, `templates/` contains publication templates, and `examples/` contains synthetic demonstrations. Research records, upstream checkouts, and downloaded skill packages are not required to run or develop this repository.
 
-## Sources and license
+## 10. Sources and license
 
 [Danus](https://github.com/frenzymath/Danus), [ReasFlow](https://github.com/reaslab/ReasFlow), [Station](https://github.com/dualverse-ai/station), [MathModelAgent](https://github.com/jihe520/MathModelAgent), [MathMN](https://github.com/ShuoSachiko/MathMN), and [MathModel-Skill](https://github.com/yushui2022/MathModel-Skill) are independent projects that this product respects and studies. Their mechanisms informed role coordination, recovery, modeling process, evidence handling, and publication constraints; this repository defines its own interfaces and does not silently copy or inherit upstream licenses. See [docs/origins.md](docs/origins.md), [LICENSE](LICENSE), [NOTICE.md](NOTICE.md), and [licenses/](licenses/).
 
@@ -202,7 +216,7 @@ Developer maintenance resumes from repository files, without requiring this conv
 
 This maps mechanism origins, rather than claiming adoption of entire upstream protocols, platforms or feature sets. This product's three tiers combine work agreements with authorization/profile binding; they are not upstream Lite/Flash/Standard/Pro branches. The research repository preserves fuller version, evidence-level and tradeoff records. Runtime and future maintenance do not require old research conversations, upstream checkouts or downloaded skill packages.
 
-## Implemented capabilities and current limits
+## 11. Implemented capabilities and current limits
 
 Code covers file-based cases, CLI lifecycle, independent Codex/command tasks, persistent state, bounded retries, human decisions, evidence registration/freezing, candidate comparison, experiment manifests, and TeX/PDF build, review records and exact bundle export. [ACCEPTANCE.md](ACCEPTANCE.md) preserves basic-flow and synthetic-demonstration evidence; it does not establish a complete real-competition run.
 
