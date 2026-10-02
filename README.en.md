@@ -63,7 +63,11 @@ All tiers retain real evidence, actual execution, failure records, human decisio
 
 ## Quick start
 
-Native Windows 11 and Linux/WSL are supported. You need Python 3.12+, `uv` and a working Codex CLI; Windows can use PowerShell without installing WSL for the supervisor. `uv sync --locked` installs the Windows-only `pywin32` dependency automatically. Paper output still needs XeLaTeX, latexmk, CTeX/xeCJK, CJK fonts, BibTeX and Poppler. See [setup](docs/setup.md) and [status](docs/status.md) for Windows setup and focused verification scope. New users do not need to learn the CLI first:
+Native Windows 11 and Linux/WSL are supported. You need Python 3.12+, `uv` and a working Codex CLI; Windows can use PowerShell without installing WSL for the supervisor. `uv sync --locked` installs the Windows-only `pywin32` dependency automatically. Paper output still needs XeLaTeX, latexmk, CTeX/xeCJK, CJK fonts, BibTeX and Poppler. See [setup](docs/setup.md) and [status](docs/status.md) for Windows setup and focused verification scope.
+
+macOS has not been adapted or tested on hardware: some POSIX mechanisms may be reused, but process identity still depends on Linux `/proc`; a Darwin implementation and restart-recovery verification are needed before claiming full support.
+
+New users do not need to learn the CLI first:
 
 1. Open a Codex main conversation that can access the local repository. Background execution still needs Codex CLI. If your account actually offers Luna, Luna/medium is an option for everyday guidance; it is not a standard Codex entitlement or a required model for every modeling task.
 2. Send this short prompt:

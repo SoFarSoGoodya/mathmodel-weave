@@ -5,6 +5,67 @@ state store, immutable attempt logs, fixed task workspaces, and a single publica
 Task success records process completion only; it does not assert scientific validity or human
 approval.
 
+## Automatic host selection
+
+There is one codebase and CLI, not separately selected product versions. Whether an operator
+Codex conversation invokes the CLI or an advanced user runs `uv run mmagent` directly,
+`runtime/platform.py` chooses host primitives deterministically using the running Python
+interpreter's `os.name`. Native Windows Python selects `"nt"`; Python inside Linux/WSL
+selects the POSIX branch. The Windows location of a WSL host does not change that choice.
+The `sys_platform == 'win32'` dependency marker in `pyproject.toml` makes `uv sync --locked`
+install `pywin32` only on Windows, and its imports occur only in Windows branches.
+SQLite state, task schemas, CLI commands and human-decision contracts remain shared.
+Codex need not choose a source version or make a model call to select the platform.
+
+| Primitive / owning function | Windows (`os.name == "nt"`) | Linux/WSL (current non-Windows implementation) |
+| --- | --- | --- |
+| Publication lock / `publication_lock` | Single-byte `msvcrt` lock with blocking retry | `fcntl.flock` |
+| PID identity / `process_start_ticks` | Process wait state and creation time through Win32 | Start ticks from `/proc/<pid>/stat` |
+| Launch / `process_options`, `own_process` | Suspended process group, named Job Object, resume primary thread | New session / process group |
+| Cancel / `signal_process_group` | Console break, then whole-job termination | SIGINT, SIGTERM, SIGKILL to the process group |
+| Executable / `executable_command` | Resolve PATH/PATHEXT, task PATH and explicit relative paths | Pass argv to the existing subprocess path |
+| Links / `is_link` | Reject symlinks and junctions | Reject symlinks |
+| Fonts / `cli._font_check` | Fontconfig, then Windows font registry | Existing fontconfig check |
+
+Host selection does not translate arbitrary task argv or shell syntax, install host tools,
+change provider configuration, or migrate saved absolute paths. Use commands and tool builds
+appropriate to the interpreter's host; [setup](../setup.md) documents both shells.
+
+## Platform troubleshooting and maintenance
+
+Start with `rtk uv run mmagent doctor [CASE]` and `rtk uv run mmagent status CASE TASK`.
+Inspect the task's `error` and attempt records, then the corresponding
+`CASE/tasks/<id>/runtime-runs/<run-id>/stderr.log` and `events.jsonl`; do not infer success
+from a live PID alone. `.runtime/state.sqlite` owns task/attempt state and
+`.runtime/publish.lock` owns publication serialization; do not hand-edit the database.
+
+- `process_start`: check executable resolution and, on Windows, the logged Job Object or
+  primary-thread error. The adapter cleans up a child when establishing ownership fails.
+- `stale_command_run`: the exit status was lost; inspect saved outputs before explicit
+  continuation. A PID alone is not a safe process identity.
+- Link/path rejection: inspect symlinks, junctions and resolved case boundaries. Do not
+  disable validation or require administrator access merely to bypass it.
+- Missing fonts/TeX/Poppler: install the appropriate host dependency when publication is
+  needed; `doctor` does not prove a PDF build or live provider session.
+
+Source ownership and the focused test command are in [developer handoff](../dev.md);
+actual Windows evidence and the Linux retest boundary are in [status](../status.md).
+`tests/runtime/test_platform.py` covers native primitives and recovery, while the scheduler,
+CLI, artifact and input tests cover their callers. These are local tests, not a modeling run.
+
+## macOS boundary
+
+Non-Windows does not mean that every Unix host is supported. macOS would currently enter
+the POSIX branch, but `process_start_ticks` still reads Linux `/proc/<pid>/stat`, which
+standard macOS does not provide. Returning no identity can make restart reconciliation
+misclassify a surviving run. Working locks and signals alone do not establish full support.
+
+A future port must add an explicit Darwin process-identity implementation (for example,
+Apple's [libproc APIs](https://github.com/apple-oss-distributions/xnu/blob/main/libsyscall/wrappers/libproc/libproc.h)),
+verify identity against PID reuse, surviving-run cancellation and restart recovery, and
+check macOS tool/font discovery. No macOS adapter or hardware test is supplied by this
+documentation update, and Windows/Linux absolute case paths are not automatically portable.
+
 ## Case And Tasks
 
 Create a case with `uv run mmagent init CASE`. Edit `CASE/case.toml` to select the two-slot

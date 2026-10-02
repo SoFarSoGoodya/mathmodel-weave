@@ -49,7 +49,11 @@ flowchart TB
 
 ## 快速开始
 
-支持原生 Windows 11 与 Linux/WSL。需要 Python 3.12+、`uv` 和可用的 Codex CLI；Windows 可直接使用 PowerShell，无需为进程监督器安装 WSL。Windows 专用依赖 `pywin32` 由 `uv sync --locked` 自动安装；论文阶段仍需要 XeLaTeX、latexmk、CTeX/xeCJK、中文字体、BibTeX 和 Poppler。Windows 安装与针对性验证范围见[环境配置](docs/zh/setup.md)和[当前状态](docs/zh/status.md)。没有使用经验时，不必先学习命令行：
+支持原生 Windows 11 与 Linux/WSL。需要 Python 3.12+、`uv` 和可用的 Codex CLI；Windows 可直接使用 PowerShell，无需为进程监督器安装 WSL。Windows 专用依赖 `pywin32` 由 `uv sync --locked` 自动安装；论文阶段仍需要 XeLaTeX、latexmk、CTeX/xeCJK、中文字体、BibTeX 和 Poppler。Windows 安装与针对性验证范围见[环境配置](docs/zh/setup.md)和[当前状态](docs/zh/status.md)。
+
+macOS 尚未适配或实机验证：虽然可复用部分 POSIX 机制，但进程身份检查仍依赖 Linux `/proc`，需要补齐 Darwin 实现并验证重启恢复后，才能声明完整支持。
+
+没有使用经验时，不必先学习命令行：
 
 1. 打开能访问本机仓库的 Codex 主沟通会话。后台执行仍依赖 Codex CLI。若账号实际提供 Luna，可选择 Luna/medium 做日常引导；它不是 Codex 标配，也不要求所有建模任务都使用同一模型。
 2. 把下面这段提示词发给 Codex：
