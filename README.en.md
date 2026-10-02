@@ -51,11 +51,11 @@ The user-facing conversation explains the work and operates existing CLI command
 
 The tiers express the desired research depth. This table guides your agreement with the coordinator; route counts, experiment scope, stopping conditions, and budget need a problem-specific explanation and human confirmation.
 
-| Tier | Suitable cases | Focus and usual deliverables | Tradeoff |
-| --- | --- | --- | --- |
-| `fast` | Familiar methods, practice, limited time, initial feasibility | Targeted evidence gaps, a real baseline or prototype, interpretable results and an issue list | Narrower comparison and validation; prototypes need review before formal adoption |
-| `standard` | Ordinary modeling projects with connected research, computation and writing | Candidate routes, a fair comparison contract, experiments, targeted recomputation/robustness checks, and a paper package for review | Effort depends on the problem; a recommendation still needs explicit approval |
-| `full` | Open questions, many external facts, disputed routes, deeper research | Broader literature, methods, counterexamples and citation tracing, independent routes, necessary recomputation, sensitivity and failure analysis | Potentially higher time and cost; search and mathematical verification remain bounded |
+| Tier       | Suitable cases                                                              | Focus and usual deliverables                                                                                                                     | Tradeoff                                                                              |
+| ---------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- |
+| `fast`     | Familiar methods, practice, limited time, initial feasibility               | Targeted evidence gaps, a real baseline or prototype, interpretable results and an issue list                                                    | Narrower comparison and validation; prototypes need review before formal adoption     |
+| `standard` | Ordinary modeling projects with connected research, computation and writing | Candidate routes, a fair comparison contract, experiments, targeted recomputation/robustness checks, and a paper package for review              | Effort depends on the problem; a recommendation still needs explicit approval         |
+| `full`     | Open questions, many external facts, disputed routes, deeper research       | Broader literature, methods, counterexamples and citation tracing, independent routes, necessary recomputation, sensitivity and failure analysis | Potentially higher time and cost; search and mathematical verification remain bounded |
 
 All tiers retain real evidence, actual execution, failure records, human decisions and final package approval. The evidence skill calls for stopping when a gap closes, the time limit is reached, or new findings have low value; deeper research should converge after two rounds without high-value additions.
 
@@ -65,7 +65,7 @@ All tiers retain real evidence, actual execution, failure records, human decisio
 
 Native Windows 11 and Linux/WSL are supported. You need Python 3.12+, `uv` and a working Codex CLI; Windows can use PowerShell without installing WSL for the supervisor. `uv sync --locked` installs the Windows-only `pywin32` dependency automatically. Paper output still needs XeLaTeX, latexmk, CTeX/xeCJK, CJK fonts, BibTeX and Poppler. See [setup](docs/setup.md) and [status](docs/status.md) for Windows setup and focused verification scope.
 
-macOS has not been adapted or tested on hardware: some POSIX mechanisms may be reused, but process identity still depends on Linux `/proc`; a Darwin implementation and restart-recovery verification are needed before claiming full support.
+macOS has not been adapted or tested on hardware: some POSIX mechanisms may be reused, but process identity still depends on Linux `/proc`; a Darwin implementation and restart-recovery verification are needed before claiming full support. The reporitory owner has no Apple devices, hence there is no plan for corresponding development. Contributing is warmly welcomed😘.
 
 New users do not need to learn the CLI first:
 
@@ -107,15 +107,15 @@ flowchart TD
 
 This describes work organization; the problem and approved scope determine the tasks. Code does not enforce a fixed stage count or reviewer-role chain for every case.
 
-| Stage | Input | Work | Output and human confirmation |
-| --- | --- | --- | --- |
-| Environment and case | Local tools, independent case path | Check tools with `doctor`; initialize directories and credential-free config | Environment gaps and `case.toml`; humans handle login, administrator actions and model settings |
-| Problem and data | Separate PDF/XLSX paths | Extract page-marked text, inspect every sheet programmatically, record uncertain regions | Faithful problem text, data profile and conversion checks; humans correct ambiguity and explicitly choose a tier |
-| Evidence | Problem, specific evidence gaps, official rules | Register source identity, locators and access limits; pin adopted versions | Original content, notes, registry and later freeze; confirm important interpretation or scope changes |
-| Route exploration | Corrected problem, evidence, human ideas | Propose independent candidates with assumptions, methods, tradeoffs and verification conditions; define comparison first | `candidates/`, `comparisons/`; humans select formal routes; a fusion remains a new unreviewed candidate |
-| Experiments and review | Selected inputs, code/config, metrics and comparison contract | Run code; preserve instances/observations, failure denominators, units, checks and environment; recompute and test robustness as needed | Run manifest, metrics, checks and comparison evidence; humans confirm adopted results; authorized ordinary iterations may continue |
-| Paper and freeze | Exact selected result, evidence freeze, current rules, writing material | Generate result tables/macros and figures, assemble TeX, build PDF and inspect every page | PDF, TeX, figure index, page images and build report; scientific changes return to experiments/result confirmation |
-| Disclosure and export | Adopted task records, complete immutable package | Join task/model/effort records with real human adoption, modifications and verification; check bundle identity | Humans confirm AI facts, then approve the exact complete package; export does not submit it to a competition |
+| Stage                  | Input                                                                   | Work                                                                                                                                    | Output and human confirmation                                                                                                      |
+| ---------------------- | ----------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Environment and case   | Local tools, independent case path                                      | Check tools with `doctor`; initialize directories and credential-free config                                                            | Environment gaps and `case.toml`; humans handle login, administrator actions and model settings                                    |
+| Problem and data       | Separate PDF/XLSX paths                                                 | Extract page-marked text, inspect every sheet programmatically, record uncertain regions                                                | Faithful problem text, data profile and conversion checks; humans correct ambiguity and explicitly choose a tier                   |
+| Evidence               | Problem, specific evidence gaps, official rules                         | Register source identity, locators and access limits; pin adopted versions                                                              | Original content, notes, registry and later freeze; confirm important interpretation or scope changes                              |
+| Route exploration      | Corrected problem, evidence, human ideas                                | Propose independent candidates with assumptions, methods, tradeoffs and verification conditions; define comparison first                | `candidates/`, `comparisons/`; humans select formal routes; a fusion remains a new unreviewed candidate                            |
+| Experiments and review | Selected inputs, code/config, metrics and comparison contract           | Run code; preserve instances/observations, failure denominators, units, checks and environment; recompute and test robustness as needed | Run manifest, metrics, checks and comparison evidence; humans confirm adopted results; authorized ordinary iterations may continue |
+| Paper and freeze       | Exact selected result, evidence freeze, current rules, writing material | Generate result tables/macros and figures, assemble TeX, build PDF and inspect every page                                               | PDF, TeX, figure index, page images and build report; scientific changes return to experiments/result confirmation                 |
+| Disclosure and export  | Adopted task records, complete immutable package                        | Join task/model/effort records with real human adoption, modifications and verification; check bundle identity                          | Humans confirm AI facts, then approve the exact complete package; export does not submit it to a competition                       |
 
 Compute and preserve evidence before writing selected scientific results into the paper. Passing machine checks means the declared checks passed; completed page review still requires final human approval.
 
@@ -191,14 +191,14 @@ Developer maintenance resumes from repository files, without requiring this conv
 
 [Danus](https://github.com/frenzymath/Danus), [ReasFlow](https://github.com/reaslab/ReasFlow), [Station](https://github.com/dualverse-ai/station), [MathModelAgent](https://github.com/jihe520/MathModelAgent), [MathMN](https://github.com/ShuoSachiko/MathMN), and [MathModel-Skill](https://github.com/yushui2022/MathModel-Skill) are independent projects that this product respects and studies. Their mechanisms informed role coordination, recovery, modeling process, evidence handling, and publication constraints; this repository defines its own interfaces and does not silently copy or inherit upstream licenses. See [docs/origins.md](docs/origins.md), [LICENSE](LICENSE), [NOTICE.md](NOTICE.md), and [licenses/](licenses/).
 
-| Source | Main inspiration | Product location |
-| --- | --- | --- |
-| [Danus](https://github.com/frenzymath/Danus) | Independent workers, role-specific tools, validation before writes | `runtime/`, `control.py` |
-| [ReasFlow](https://github.com/reaslab/ReasFlow) | Specialist session identity, handoffs and knowledge cards | `runtime/`, `workflow.py`, evidence knowledge directories |
-| [Station](https://github.com/dualverse-ai/station) | Parallel reasoning, a single writer, isolation ideas, recovery and human pauses | Task workspaces, publication lock, runtime and control |
-| [MathModelAgent](https://github.com/jihe520/MathModelAgent) | Staged problem reading, modeling, coding and writing | `skills/` and module documentation |
-| [MathMN](https://github.com/ShuoSachiko/MathMN) | Evidence ledgers, route mapping, literature research and traceable handoffs | Evidence/exploration skills, source and candidate records |
-| [MathModel-Skill](https://github.com/yushui2022/MathModel-Skill) | Structured problem statements, candidate comparison, recomputation, robustness and publication gates | `skills/`, execution/publication and templates |
+| Source                                                           | Main inspiration                                                                                     | Product location                                          |
+| ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| [Danus](https://github.com/frenzymath/Danus)                     | Independent workers, role-specific tools, validation before writes                                   | `runtime/`, `control.py`                                  |
+| [ReasFlow](https://github.com/reaslab/ReasFlow)                  | Specialist session identity, handoffs and knowledge cards                                            | `runtime/`, `workflow.py`, evidence knowledge directories |
+| [Station](https://github.com/dualverse-ai/station)               | Parallel reasoning, a single writer, isolation ideas, recovery and human pauses                      | Task workspaces, publication lock, runtime and control    |
+| [MathModelAgent](https://github.com/jihe520/MathModelAgent)      | Staged problem reading, modeling, coding and writing                                                 | `skills/` and module documentation                        |
+| [MathMN](https://github.com/ShuoSachiko/MathMN)                  | Evidence ledgers, route mapping, literature research and traceable handoffs                          | Evidence/exploration skills, source and candidate records |
+| [MathModel-Skill](https://github.com/yushui2022/MathModel-Skill) | Structured problem statements, candidate comparison, recomputation, robustness and publication gates | `skills/`, execution/publication and templates            |
 
 This maps mechanism origins, rather than claiming adoption of entire upstream protocols, platforms or feature sets. This product's three tiers combine work agreements with authorization/profile binding; they are not upstream Lite/Flash/Standard/Pro branches. The research repository preserves fuller version, evidence-level and tradeoff records. Runtime and future maintenance do not require old research conversations, upstream checkouts or downloaded skill packages.
 
@@ -206,14 +206,14 @@ This maps mechanism origins, rather than claiming adoption of entire upstream pr
 
 Code covers file-based cases, CLI lifecycle, independent Codex/command tasks, persistent state, bounded retries, human decisions, evidence registration/freezing, candidate comparison, experiment manifests, and TeX/PDF build, review records and exact bundle export. [ACCEPTANCE.md](ACCEPTANCE.md) preserves basic-flow and synthetic-demonstration evidence; it does not establish a complete real-competition run.
 
-| Boundary | Current behavior / improvement direction |
-| --- | --- |
-| Models and external tools | Basic acceptance did not establish every live provider, MCP, Exa or zvec-grep integration; check local configuration, and verify example model names |
-| Platform and migration | Windows 11 and Linux/WSL are supported; Windows uses Job Objects and native file locks. Cross-system absolute case-path migration and session recovery without history remain unsupported |
-| PDF/XLSX | `pypdf` reads embedded text and `openpyxl` inspects workbooks; scans need external OCR/MinerU, and formula text/cache is not recalculation |
-| Figures and papers | The first renderer targets a synthetic allocation example; new scientific figures need task-specific renderers, and generated page images still need actual inspection and review records |
-| Export formats | Chinese XeLaTeX/PDF plus supporting files; no built-in DOCX/LibreOffice, DrawIO, Plotly/Chrome or fixed reviewer-role chain |
-| Rules and quality | Recheck and freeze current year/regional rules per case; local checks are not mathematical proofs, award guarantees or automatic competition submission |
+| Boundary                  | Current behavior / improvement direction                                                                                                                                                  |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Models and external tools | Basic acceptance did not establish every live provider, MCP, Exa or zvec-grep integration; check local configuration, and verify example model names                                      |
+| Platform and migration    | Windows 11 and Linux/WSL are supported; Windows uses Job Objects and native file locks. Cross-system absolute case-path migration and session recovery without history remain unsupported |
+| PDF/XLSX                  | `pypdf` reads embedded text and `openpyxl` inspects workbooks; scans need external OCR/MinerU, and formula text/cache is not recalculation                                                |
+| Figures and papers        | The first renderer targets a synthetic allocation example; new scientific figures need task-specific renderers, and generated page images still need actual inspection and review records |
+| Export formats            | Chinese XeLaTeX/PDF plus supporting files; no built-in DOCX/LibreOffice, DrawIO, Plotly/Chrome or fixed reviewer-role chain                                                               |
+| Rules and quality         | Recheck and freeze current year/regional rules per case; local checks are not mathematical proofs, award guarantees or automatic competition submission                                   |
 
 Further work centers on live integration evidence, platform support and problem-specific capabilities; see [status](docs/status.md) for priorities. Research depth, concurrency slots, process sandbox and spending budget are distinct dimensions; material changes need explanation and confirmation.
 
