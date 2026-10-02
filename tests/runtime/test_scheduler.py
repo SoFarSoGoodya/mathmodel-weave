@@ -6,7 +6,7 @@ import sys
 import time
 
 from mathmodel_agent.runtime.scheduler import Supervisor
-from mathmodel_agent.runtime.state import State
+from mathmodel_agent.runtime.state import State, process_start_ticks
 
 
 
@@ -112,8 +112,8 @@ def test_child_retry_uses_injected_clock_and_releases_slot(case_root: Path):
 def test_cancel_terminates_real_process_group(case_root: Path):
     state = State(case_root)
     script = (
-        "import pathlib,subprocess,time; "
-        "p=subprocess.Popen(['sleep','30']); pathlib.Path('child.pid').write_text(str(p.pid)); "
+        "import pathlib,subprocess,sys,time; "
+        "p=subprocess.Popen([sys.executable,'-c','import time; time.sleep(30)']); pathlib.Path('child.pid').write_text(str(p.pid)); "
         "pathlib.Path('ready').write_text('yes'); time.sleep(30)"
     )
     task_id = state.submit(
@@ -130,9 +130,9 @@ def test_cancel_terminates_real_process_group(case_root: Path):
     state.cancel(task_id)
     assert pump(supervisor, [task_id]) == ["cancelled"]
     deadline = time.monotonic() + 2
-    while Path(f"/proc/{child_pid}").exists() and time.monotonic() < deadline:
+    while process_start_ticks(child_pid) is not None and time.monotonic() < deadline:
         time.sleep(0.02)
-    assert not Path(f"/proc/{child_pid}").exists()
+    assert process_start_ticks(child_pid) is None
 
 
 def test_same_session_followup_is_not_failure_retry(case_root: Path):
@@ -221,7 +221,7 @@ def test_timeout_is_state_not_automatic_retry(case_root: Path):
     clock = Clock()
     state = State(case_root, clock=clock)
     task_id = state.submit(
-        {"task_id": "timeout", "kind": "command", "argv": ["sleep", "30"], "timeout_seconds": 5}
+        {"task_id": "timeout", "kind": "command", "argv": [sys.executable, "-c", "import time; time.sleep(30)"], "timeout_seconds": 5}
     )
     supervisor = Supervisor(case_root, clock=clock)
     supervisor.run_once()

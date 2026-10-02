@@ -10,7 +10,7 @@ The tracked skill sources are `skills/*/SKILL.md`. `.codex/` and `.agents/` have
 
 ## Minimum new-device development steps
 
-1. Restore or clone the product repository, including `uv.lock`, and enter its root. Python requires 3.12 or newer; the process supervisor targets Linux/WSL.
+1. Restore or clone the product repository, including `uv.lock`, and enter its root. Python requires 3.12 or newer; the process supervisor supports Windows 11 and Linux/WSL.
 2. Run `rtk uv sync --locked`, `rtk uv run mmagent --help`, and `rtk uv run mmagent doctor`. Doctor is a local diagnostic, not a provider login or live-model check.
 3. Read the owning source, its immediate callers, and focused tests. Define the intended change and a bounded verification check before editing.
 4. Use `uv`/`uv add` for Python, `bun` for optional Node tools, and `rtk` for shell commands. Missing TeX tools need resolving for publication work, not for every source edit.
@@ -23,12 +23,17 @@ Source paths in the table start at `mathmodel_agent/`; test paths start at the r
 | --- | --- | --- |
 | CLI/config | `cli.py:build_parser/main/doctor`; `runtime/config.py:init_case/load_case_config`; `case.toml` | `tests/runtime/test_cli.py`, `tests/runtime/test_state.py`; CLI help |
 | Runtime | `runtime/state.py:State`; `runtime/scheduler.py:Supervisor`; `runtime/provider.py`; `.runtime/state.sqlite`, task inputs/workspaces and attempt logs | `tests/runtime/test_state.py`, `tests/runtime/test_provider.py`, `tests/runtime/test_scheduler.py` |
+| Host integration | `runtime/platform.py`: native locks, executable lookup, process creation identity, POSIX groups and Windows Job Objects; no second state store | `tests/runtime/test_platform.py`; local doctor |
 | Immutable artifacts | `runtime/artifacts.py:publish_bundle/resolve_bundle`; bundles and receipts | `tests/runtime/test_artifacts.py` |
 | Human control/coordination | `control.py:ask_human/record_human_decision/record_ai_adoption`; `workflow.py:Coordinator.poll`; human Markdown, `human/control.json`, `human/coordinator.json`, worker `RESULT.json` | `tests/control/test_control.py`, `tests/exploration/test_workflow.py` |
 | Evidence | `evidence/intake.py`, `evidence/pool.py`, `evidence/freeze.py`; originals, extracted data, `knowledge/registry.json`, `freezes/` | `tests/evidence/test_intake.py`, `tests/evidence/test_pool_freeze.py` |
 | Candidates/comparisons | `exploration.py:write_candidate/write_variant/create_comparison_contract/write_comparison_pack`; `candidates/`, `comparisons/` | `tests/exploration/test_exploration.py` |
 | Numerical execution | `execution/worker.py:prepare_experiment/submit_experiment/run_experiment/finalize_experiment`; immutable run packages through runtime | `tests/execution/test_execution_flow.py` |
 | Paper/export | `publication/pipeline.py:build_publication`; `publication/checks.py:record_visual_review`; `publication/ai_usage.py`, `publication/manifest.py`, `publication/cli.py`; build reports, staged packages and export | `tests/publication/test_manifest.py`, `tests/publication/test_ai_usage.py`; focused `tests/publication/test_pipeline.py` cases |
+
+## Focused Windows verification
+
+Windows runtime maintenance does not require a research tier, a modeling case run, a live provider request or a PDF rebuild. For a focused host check, run `rtk uv run pytest tests/runtime/test_platform.py tests/runtime/test_scheduler.py tests/runtime/test_cli.py tests/runtime/test_artifacts.py tests/runtime/test_state.py -q -k "not agent_profile_and_policy_are_snapshotted"`. The excluded snapshot test has an inherited default-model expectation mismatch; it is unrelated to the Windows adapter and is not repaired by this change. See [status](status.md) for the actual result. Native Windows details and shell examples are in [setup](setup.md) and [runtime](modules/runtime.md).
 
 ## What survives a system replacement
 

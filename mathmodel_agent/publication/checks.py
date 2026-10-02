@@ -8,6 +8,7 @@ import subprocess
 from pathlib import Path
 
 from mathmodel_agent.contracts import sha256_file
+from mathmodel_agent.runtime.platform import executable_command
 
 from .errors import PublicationError
 
@@ -43,7 +44,7 @@ def scan_placeholders(project: str | Path) -> list[str]:
 
 
 def run_checked(command: list[str], *, cwd: str | Path, log_path: str | Path | None = None) -> str:
-    result = subprocess.run(command, cwd=cwd, text=True, capture_output=True, check=False)
+    result = subprocess.run(executable_command(command, cwd=cwd), cwd=cwd, text=True, encoding="utf-8", errors="replace", capture_output=True, check=False)
     combined = result.stdout + result.stderr
     if log_path is not None:
         Path(log_path).write_text(combined, encoding="utf-8")

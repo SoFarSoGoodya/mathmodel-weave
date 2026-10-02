@@ -94,14 +94,21 @@ new request/run, not a redraw.
 
 ## Reproducible Synthetic Run
 
-From `product/`, run:
+From the repository root, explicitly run the demo only when needed; it is not a Windows-adaptation or startup check. POSIX shell:
 
 ```bash
 MPLCONFIGDIR=/tmp/mmagent-mpl uv run python examples/experiment/allocation/run_demo.py /tmp/synthetic-allocation-case
 ```
 
+Windows PowerShell equivalent:
+
+```powershell
+$env:MPLCONFIGDIR = Join-Path $env:TEMP 'mmagent-mpl'
+rtk uv run python examples/experiment/allocation/run_demo.py (Join-Path $env:TEMP 'synthetic-allocation-case')
+```
+
 The result is a formal package under
 `/tmp/synthetic-allocation-case/artifacts/bundle-*/run_manifest.json`, plus its
-`demo-result.json`. The batch intentionally records two known-answer successes and
+`demo-result.json` (on Windows, under the selected temporary case directory). The batch intentionally records two known-answer successes and
 one deliberate failure: greedy mean value `16.5`, exhaustive mean value `19.5`, and a
 failure denominator of `1/3`. It is deliberately unsuitable as competition evidence.

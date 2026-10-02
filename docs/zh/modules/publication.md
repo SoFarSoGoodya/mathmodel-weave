@@ -114,7 +114,14 @@ still requires a separate `paper_package` decision bound to its exact ArtifactRe
 
 ## Build And Review
 
-Normal environment with CTeX installed:
+以下命令只在明确需要出版任务时使用，不属于 Windows 适配检查。PowerShell 中已安装 Windows TeX/Poppler 与所需字体时，使用现有 CLI：
+
+```powershell
+$env:MPLCONFIGDIR = Join-Path $env:TEMP 'mmagent-publication-mpl'
+rtk uv run mmagent publication build CASE_ROOT REQUEST_JSON
+```
+
+下列环境变量赋值与历史 D5 路径使用 POSIX shell。Normal environment with CTeX installed:
 
 ```bash
 MPLCONFIGDIR=.runtime/publication-mpl UV_CACHE_DIR=.runtime/uv-cache \

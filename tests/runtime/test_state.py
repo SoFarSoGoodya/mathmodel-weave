@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 
 import pytest
@@ -31,16 +30,16 @@ def test_submit_creates_fixed_workspace_and_selected_inputs_only(case_root: Path
     assert task["spec"]["prompt_ref"] == "input/prompt.md"
 
 
-def test_submit_rejects_escape_symlink_and_secret_env(case_root: Path):
+def test_submit_rejects_escape_symlink_and_secret_env(case_root: Path, directory_link):
     outside = case_root.parent / "outside.txt"
     outside.write_text("outside", encoding="utf-8")
-    os.symlink(outside, case_root / "datasets" / "link.txt")
+    directory_link(outside.parent, case_root / "datasets" / "link")
     state = State(case_root)
 
     with pytest.raises(TaskValidationError, match="escapes"):
         state.submit({"kind": "command", "argv": ["true"], "inputs": [str(outside)]})
     with pytest.raises(TaskValidationError, match="symlink"):
-        state.submit({"kind": "command", "argv": ["true"], "inputs": ["datasets/link.txt"]})
+        state.submit({"kind": "command", "argv": ["true"], "inputs": ["datasets/link"]})
     with pytest.raises(TaskValidationError, match="credential-like"):
         state.submit({"kind": "command", "argv": ["true"], "env": {"API_TOKEN": "nope"}})
 

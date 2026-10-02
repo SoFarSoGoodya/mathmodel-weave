@@ -2,7 +2,7 @@
 
 ## 恢复产品研发
 
-克隆或恢复本产品仓库，进入根目录。源码要求 Python 3.12 或更新；runtime supervisor 面向 Linux/WSL。Python 依赖由 `uv` 和已跟踪的 `uv.lock` 管理。可选 Node 工具使用 `bun`，日常 shell 使用 `rtk`。不要靠复制旧虚拟环境安装依赖。
+克隆或恢复本产品仓库，进入根目录。源码要求 Python 3.12 或更新；runtime supervisor 支持原生 Windows 11 与 Linux/WSL。Python 依赖由 `uv` 和已跟踪的 `uv.lock` 管理；`pywin32` 仅在 Windows 安装。可选 Node 工具使用 `bun`，日常 shell 使用 `rtk`。不要靠复制旧虚拟环境安装依赖。
 
 ```text
 rtk uv sync --locked
@@ -13,6 +13,20 @@ rtk uv run mmagent doctor
 Doctor 检查本机 Codex、uv、bun、rtk、XeLaTeX/latexmk/BibTeX、CTeX/xeCJK/zhnumber、Noto CJK 字体和 Poppler。`rtk uv run mmagent doctor CASE_DIR` 还检查 case 配置与配置的工具可执行程序。它不负责登录、不检查凭据、不请求实时 provider、不运行 MCP、不验证模型可用性，也不证明 resume 能成功。缺少出版依赖可在需要出版工作时补齐；继承的成功 PDF 不代表这台主机能重新构建。
 
 Codex/provider 配置、profiles、凭据和 MCP 登录属于用户可信本机环境。产品不安装或重写全局认证/配置。请自行重建或安全恢复，勿把秘密发进聊天、写入 Git、case TOML/JSON/Markdown 或人工回答。系统字体和 TeX 宏包需另行恢复。包含所需宏包的自定义 TeX 树是主机依赖，不一定是可丢弃缓存。
+
+## 原生 Windows
+
+在 PowerShell 中运行相同的环境引导命令。Codex CLI、uv、rtk 应安装 Windows 版本并加入 `PATH`；可选 bun、TeX 与 Poppler 也需要 Windows 可执行程序。Doctor 会解析程序路径并检查命令退出状态。字体检查优先使用可用的 fontconfig，否则查询用户/系统 Windows 字体注册表。缺少 Noto 字体仍是出版依赖问题；产品不会自动安装字体或修改全局配置。
+
+任务 argv 使用 Windows 路径，含空格的路径需正确引用。参数含 shell 特殊字符时优先使用原生 `.exe`；`.cmd`/`.bat` 启动器仍遵循 Windows 批处理引用规则。PowerShell 内置命令不是独立可执行程序；需要时提交明确的 `powershell.exe` 或 `pwsh.exe` 调用。产品不会自动翻译 `sleep` 等 POSIX 命令；跨平台延时可用所选 Python 解释器（`python -c "import time; time.sleep(1)"`）。
+
+```powershell
+rtk uv run mmagent doctor
+# 仅在开始新题时执行；目录放在产品仓库之外。
+rtk uv run mmagent init 'D:\MathModelCases\case-one'
+```
+
+Linux 专有的 runtime 机制由本机文件锁和 Job Object 替代，详见[runtime](modules/runtime.md)。选定输入树和发布 staging 会拒绝符号链接及 Windows junction。创建符号链接可能要求开发者模式或管理员权限，正常使用产品不要求开启它们。跨系统恢复时若不能保留原绝对路径，仍需显式导入新 case。
 
 ## 配置新 case
 

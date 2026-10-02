@@ -1,4 +1,6 @@
 from pathlib import Path
+import os
+import subprocess
 
 import pytest
 
@@ -10,6 +12,19 @@ def case_root(tmp_path: Path) -> Path:
     root = tmp_path / "case"
     init_case(root)
     return root
+
+
+@pytest.fixture
+def directory_link():
+    def create(target: Path, link: Path) -> None:
+        try:
+            os.symlink(target, link, target_is_directory=True)
+        except OSError as exc:
+            if os.name != "nt" or exc.winerror != 1314:
+                raise
+            subprocess.run(["cmd.exe", "/d", "/c", "mklink", "/J", str(link), str(target)], check=True, capture_output=True)
+
+    return create
 
 
 def pump(supervisor, task_ids, timeout=5):

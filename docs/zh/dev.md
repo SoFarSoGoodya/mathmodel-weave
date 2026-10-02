@@ -10,7 +10,7 @@
 
 ## 新设备最小开发步骤
 
-1. 恢复或克隆产品仓库，包括 `uv.lock`，进入产品根目录。Python 要求 3.12 或更新；进程监督器面向 Linux/WSL。
+1. 恢复或克隆产品仓库，包括 `uv.lock`，进入产品根目录。Python 要求 3.12 或更新；进程监督器支持 Windows 11 与 Linux/WSL。
 2. 运行 `rtk uv sync --locked`、`rtk uv run mmagent --help`、`rtk uv run mmagent doctor`。doctor 是本地诊断，不是 provider 登录或实时模型测试。
 3. 阅读所属源码、直接调用者和针对性测试；修改前明确期望行为与范围有限的验证方法。
 4. Python 使用 `uv`/`uv add`，可选 Node 工具使用 `bun`，shell 命令使用 `rtk`。出版工作需补齐 TeX 工具，但不要求每次源码修改都先构建论文。
@@ -23,12 +23,17 @@
 | --- | --- | --- |
 | CLI/配置 | `cli.py:build_parser/main/doctor`；`runtime/config.py:init_case/load_case_config`；`case.toml` | `tests/runtime/test_cli.py`、`tests/runtime/test_state.py`；CLI help |
 | Runtime | `runtime/state.py:State`；`runtime/scheduler.py:Supervisor`；`runtime/provider.py`；`.runtime/state.sqlite`、任务输入/工作目录/attempt 日志 | `tests/runtime/test_state.py`、`tests/runtime/test_provider.py`、`tests/runtime/test_scheduler.py` |
+| 主机适配 | `runtime/platform.py`：本机文件锁、可执行程序解析、进程创建身份、POSIX 进程组与 Windows Job Object；没有第二个状态库 | `tests/runtime/test_platform.py`；本地 doctor |
 | 不可变产物 | `runtime/artifacts.py:publish_bundle/resolve_bundle`；bundle 与回执 | `tests/runtime/test_artifacts.py` |
 | 人工控制/协调 | `control.py:ask_human/record_human_decision/record_ai_adoption`；`workflow.py:Coordinator.poll`；人工 Markdown、`human/control.json`、`human/coordinator.json`、worker `RESULT.json` | `tests/control/test_control.py`、`tests/exploration/test_workflow.py` |
 | 证据 | `evidence/intake.py`、`evidence/pool.py`、`evidence/freeze.py`；原件、提取数据、`knowledge/registry.json`、`freezes/` | `tests/evidence/test_intake.py`、`tests/evidence/test_pool_freeze.py` |
 | 候选/比较 | `exploration.py:write_candidate/write_variant/create_comparison_contract/write_comparison_pack`；`candidates/`、`comparisons/` | `tests/exploration/test_exploration.py` |
 | 数值执行 | `execution/worker.py:prepare_experiment/submit_experiment/run_experiment/finalize_experiment`；通过 runtime 发布的不可变运行包 | `tests/execution/test_execution_flow.py` |
 | 论文/导出 | `publication/pipeline.py:build_publication`；`publication/checks.py:record_visual_review`；`publication/ai_usage.py`、`publication/manifest.py`、`publication/cli.py`；构建报告、暂存包与导出 | `tests/publication/test_manifest.py`、`tests/publication/test_ai_usage.py`；针对性 `tests/publication/test_pipeline.py` 用例 |
+
+## Windows 针对性验证
+
+Windows runtime 维护不要求研究档位、完整建模 case、实时 provider 请求或 PDF 重建。针对性主机检查可运行 `rtk uv run pytest tests/runtime/test_platform.py tests/runtime/test_scheduler.py tests/runtime/test_cli.py tests/runtime/test_artifacts.py tests/runtime/test_state.py -q -k "not agent_profile_and_policy_are_snapshotted"`。被排除的 profile snapshot 测试沿用了不匹配当前默认模型的旧预期，与 Windows 适配无关，本次不修复。实际结果见[当前状态](status.md)；原生 Windows 细节和 shell 示例见[环境配置](setup.md)与[runtime](modules/runtime.md)。
 
 ## 换系统后什么能够恢复
 

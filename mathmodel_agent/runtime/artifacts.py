@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import fcntl
 import hashlib
 import json
 import os
@@ -15,6 +14,7 @@ import uuid
 from mathmodel_agent.contracts import sha256_file, write_json
 
 from .state import State
+from .platform import is_link, publication_lock
 
 
 SUBMISSION_PATTERN = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}\Z")
@@ -42,14 +42,13 @@ def publish_bundle(
     if not isinstance(submission_id, str) or not SUBMISSION_PATTERN.fullmatch(submission_id):
         raise ArtifactError("submission_id contains unsupported characters")
     source = _inside_existing(root, staging)
-    if not source.is_dir() or source.is_symlink():
+    if not source.is_dir() or is_link(source):
         raise ArtifactError("staging must be a real directory")
 
     artifacts_root = root / "artifacts"
     artifacts_root.mkdir(parents=True, exist_ok=True)
     lock_path = state.runtime_root / "publish.lock"
-    with lock_path.open("a+b") as lock:
-        fcntl.flock(lock, fcntl.LOCK_EX)
+    with publication_lock(lock_path):
         existing = state.receipt(submission_id)
         snapshot, source_stats = _snapshot(source)
         content_id = _content_id(snapshot)
@@ -114,7 +113,7 @@ def resolve_bundle(case_root: str | Path, ref: dict, verify: bool = True) -> Pat
         raise ArtifactError("invalid ArtifactRef sha256")
     path = (root / "artifacts" / artifact_id).resolve()
     artifacts = (root / "artifacts").resolve()
-    if not path.is_relative_to(artifacts) or not path.is_dir() or path.is_symlink():
+    if not path.is_relative_to(artifacts) or not path.is_dir() or is_link(path):
         raise ArtifactError("artifact does not exist inside this case")
     if verify:
         _verify_directory(path, ref)
@@ -178,7 +177,7 @@ def _tree_stats(root: Path) -> dict[Path, tuple[int, int, int]]:
         directory_path = Path(directory)
         for name in names:
             path = directory_path / name
-            if path.is_symlink():
+            if is_link(path):
                 raise ArtifactError(f"staging contains symlink: {path.relative_to(root)}")
         for name in filenames:
             path = directory_path / name
@@ -194,7 +193,7 @@ def _tree_stats(root: Path) -> dict[Path, tuple[int, int, int]]:
 
 def _verify_directory(path: Path, ref: dict) -> None:
     manifest_path = path / "bundle.json"
-    if not manifest_path.is_file() or manifest_path.is_symlink():
+    if not manifest_path.is_file() or is_link(manifest_path):
         raise ArtifactError("artifact manifest is missing or unsafe")
     if sha256_file(manifest_path) != ref["sha256"]:
         raise ArtifactError("artifact manifest hash does not match ArtifactRef")
@@ -229,7 +228,7 @@ def _verify_directory(path: Path, ref: dict) -> None:
         if relative.as_posix() in expected_paths:
             raise ArtifactError("artifact manifest contains duplicate paths")
         file_path = path / relative
-        if not file_path.is_file() or file_path.is_symlink():
+        if not file_path.is_file() or is_link(file_path):
             raise ArtifactError(f"artifact file is missing or unsafe: {relative}")
         if file_path.stat().st_size != item.get("size") or sha256_file(file_path) != item.get("sha256"):
             raise ArtifactError(f"artifact file verification failed: {relative}")
@@ -247,7 +246,7 @@ def _inside_existing(root: Path, value: str | Path) -> Path:
     candidate = Path(value)
     if not candidate.is_absolute():
         candidate = root / candidate
-    if candidate.is_symlink() or not candidate.exists():
+    if is_link(candidate) or not candidate.exists():
         raise ArtifactError("staging path is missing or a symlink")
     resolved = candidate.resolve()
     if not resolved.is_relative_to(root):

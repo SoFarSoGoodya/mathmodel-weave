@@ -4,7 +4,7 @@ D3 is file-driven. It adds no scheduler or task database: `State` remains the so
 
 ## Minimal Path
 
-From the repository root, create a case and let the human edit the problem text directly:
+From the repository root, create a case and let the human edit the problem text directly. The following `/tmp` and environment-assignment examples use a POSIX shell; on Windows use `rtk uv run mmagent init 'D:\MathModelCases\case-one'` and substitute that case path in the Python examples (as a raw string, such as `r'D:\MathModelCases\case-one'`). No Unix cache variable is required.
 
 ```bash
 UV_CACHE_DIR=/tmp/mmagent-uv-cache uv run mmagent init /tmp/mm-case

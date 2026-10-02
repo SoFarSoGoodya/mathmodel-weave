@@ -4,7 +4,7 @@ control 由文件驱动，不新增调度器或任务数据库：`State` 仍是�
 
 ## 最小使用路径
 
-在仓库根目录创建 case，由真人直接编辑题目文字：
+在仓库根目录创建 case，由真人直接编辑题目文字。以下 `/tmp` 路径与环境变量赋值示例使用 POSIX shell；Windows 可运行 `rtk uv run mmagent init 'D:\MathModelCases\case-one'`，并在 Python 示例中替换为该 case 路径（例如原始字符串 `r'D:\MathModelCases\case-one'`）。不要求 Unix 缓存变量。
 
 ```bash
 UV_CACHE_DIR=/tmp/mmagent-uv-cache uv run mmagent init /tmp/mm-case

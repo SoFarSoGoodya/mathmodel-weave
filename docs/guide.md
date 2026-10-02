@@ -8,7 +8,7 @@ Two roles are distinct: your Codex conversation is the **operator assistant**; m
 
 > Read AGENTS.md and docs/guide.md. Use existing doctor and mmagent commands to inspect the environment and the case, explain what is missing, and carry out the work in this project. Ask me for login/admin actions, tier choice, formal route/result choices, truthful AI disclosure and final package approval. Do not invent my answers. Keep personal cases outside the release repository.
 
-Linux/WSL and an available Codex account or user-configured compatible provider are required. Login, credentials and provider/MCP configuration remain in your trusted local environment; never send secrets into chat or answer files. The assistant can run deterministic doctor checks and explain missing tools, but login, administrator actions and installations can require you. Doctor is not a live-provider/MCP verification. Environment details are in [setup](setup.md).
+Windows 11 or Linux/WSL and an available Codex account or user-configured compatible provider are required. Login, credentials and provider/MCP configuration remain in your trusted local environment; never send secrets into chat or answer files. The assistant can run deterministic doctor checks and explain missing tools, but login, administrator actions and installations can require you. Doctor is not a live-provider/MCP verification. Environment details are in [setup](setup.md).
 
 If your account actually provides Luna, it may be used with medium for lightweight setup/status help, but is optional; the assistant must not assume availability or silently replace model names. Choose a suitable model for complex modeling. Historical names in the case template need checking against your actual configured account.
 

@@ -49,7 +49,7 @@ flowchart TB
 
 ## 快速开始
 
-作者的开发与使用环境是 WSL2 + Ubuntu 24 LTS + Codex CLI；原生 Windows 适配仍待开发。需要 bash/zsh、Python 3.12+、`uv` 和可用的 Codex CLI；论文阶段还需要 XeLaTeX、latexmk、CTeX/xeCJK、中文字体、BibTeX 和 Poppler。没有使用经验时，不必先学习命令行：
+支持原生 Windows 11 与 Linux/WSL。需要 Python 3.12+、`uv` 和可用的 Codex CLI；Windows 可直接使用 PowerShell，无需为进程监督器安装 WSL。Windows 专用依赖 `pywin32` 由 `uv sync --locked` 自动安装；论文阶段仍需要 XeLaTeX、latexmk、CTeX/xeCJK、中文字体、BibTeX 和 Poppler。Windows 安装与针对性验证范围见[环境配置](docs/zh/setup.md)和[当前状态](docs/zh/status.md)。没有使用经验时，不必先学习命令行：
 
 1. 打开能访问本机仓库的 Codex 主沟通会话。后台执行仍依赖 Codex CLI。若账号实际提供 Luna，可选择 Luna/medium 做日常引导；它不是 Codex 标配，也不要求所有建模任务都使用同一模型。
 2. 把下面这段提示词发给 Codex：
@@ -60,10 +60,10 @@ flowchart TB
 
 熟悉命令行的开发者也可以直接运行：
 
-```bash
-uv sync --locked
-uv run mmagent doctor
-uv run mmagent init CASE
+```text
+rtk uv sync --locked
+rtk uv run mmagent doctor
+rtk uv run mmagent init CASE
 ```
 
 手动命令、配置文件、MinerU 外部预处理和故障处理见 [环境配置](docs/setup.md) 与 [命令参考](docs/cli.md)。内置 PDF/XLSX 读取使用 `pypdf` 和 `openpyxl`；扫描 PDF 可先用外部 OCR 或 MinerU 处理，本产品当前不包含 MinerU SDK 适配器。
@@ -208,7 +208,7 @@ mathmodel-weave/
 | 边界 | 当前行为 / 后续改进方向 |
 | --- | --- |
 | 模型与外部工具 | 基础验收未证明所有真实 provider、MCP、Exa 或 zvec-grep 链路；按本机实际配置检查，示例模型名不代表可用性 |
-| 平台与迁移 | 目前面向 Linux/WSL；原生 Windows、跨机器绝对路径迁移和无历史的 session 恢复不能视为已实现 |
+| 平台与迁移 | 支持 Windows 11 与 Linux/WSL；Windows 使用 Job Object 和本机文件锁。跨系统绝对路径迁移和无历史的 session 恢复仍未实现 |
 | PDF/XLSX | `pypdf` 读取嵌入文字，`openpyxl` 检查工作簿；扫描件需外部 OCR/MinerU，公式文本与缓存不等于重新计算 |
 | 图表与论文 | 内置首个 renderer 面向合成分配示例，新科学图需题目专用 renderer；页面图生成后仍须实际逐页审阅并记录 |
 | 导出形态 | 当前是中文 XeLaTeX/PDF 与支持文件，不内置 DOCX/LibreOffice、DrawIO、Plotly/Chrome 或固定审稿角色链 |

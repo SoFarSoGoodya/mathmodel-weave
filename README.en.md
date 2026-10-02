@@ -63,7 +63,7 @@ All tiers retain real evidence, actual execution, failure records, human decisio
 
 ## Quick start
 
-The author's development and usage environment is WSL2 + Ubuntu 24 LTS + Codex CLI; native Windows support remains future work. You need bash/zsh, Python 3.12+, `uv` and a working Codex CLI. Paper output also needs XeLaTeX, latexmk, CTeX/xeCJK, CJK fonts, BibTeX and Poppler. New users do not need to learn the CLI first:
+Native Windows 11 and Linux/WSL are supported. You need Python 3.12+, `uv` and a working Codex CLI; Windows can use PowerShell without installing WSL for the supervisor. `uv sync --locked` installs the Windows-only `pywin32` dependency automatically. Paper output still needs XeLaTeX, latexmk, CTeX/xeCJK, CJK fonts, BibTeX and Poppler. See [setup](docs/setup.md) and [status](docs/status.md) for Windows setup and focused verification scope. New users do not need to learn the CLI first:
 
 1. Open a Codex main conversation that can access the local repository. Background execution still needs Codex CLI. If your account actually offers Luna, Luna/medium is an option for everyday guidance; it is not a standard Codex entitlement or a required model for every modeling task.
 2. Send this short prompt:
@@ -74,10 +74,10 @@ The author's development and usage environment is WSL2 + Ubuntu 24 LTS + Codex C
 
 Developers who prefer the CLI can run:
 
-```bash
-uv sync --locked
-uv run mmagent doctor
-uv run mmagent init CASE
+```text
+rtk uv sync --locked
+rtk uv run mmagent doctor
+rtk uv run mmagent init CASE
 ```
 
 See [setup](docs/setup.md) and the [CLI reference](docs/cli.md) for configuration, optional MinerU/OCR preprocessing, and troubleshooting. Built-in PDF/XLSX intake uses `pypdf` and `openpyxl`; this release has no MinerU SDK adapter.
@@ -205,7 +205,7 @@ Code covers file-based cases, CLI lifecycle, independent Codex/command tasks, pe
 | Boundary | Current behavior / improvement direction |
 | --- | --- |
 | Models and external tools | Basic acceptance did not establish every live provider, MCP, Exa or zvec-grep integration; check local configuration, and verify example model names |
-| Platform and migration | Linux/WSL is the current target; native Windows, relocation of absolute case paths and session recovery without history are not established capabilities |
+| Platform and migration | Windows 11 and Linux/WSL are supported; Windows uses Job Objects and native file locks. Cross-system absolute case-path migration and session recovery without history remain unsupported |
 | PDF/XLSX | `pypdf` reads embedded text and `openpyxl` inspects workbooks; scans need external OCR/MinerU, and formula text/cache is not recalculation |
 | Figures and papers | The first renderer targets a synthetic allocation example; new scientific figures need task-specific renderers, and generated page images still need actual inspection and review records |
 | Export formats | Chinese XeLaTeX/PDF plus supporting files; no built-in DOCX/LibreOffice, DrawIO, Plotly/Chrome or fixed reviewer-role chain |

@@ -42,11 +42,18 @@
 
 ## 合成运行
 
-从产品根目录运行：
+只在确实需要演示时从产品根目录运行；这不是 Windows 适配或启动检查。POSIX shell：
 
 ```bash
 MPLCONFIGDIR=/tmp/mmagent-mpl uv run python examples/experiment/allocation/run_demo.py /tmp/synthetic-allocation-case
 ```
 
-结果位于 `/tmp/synthetic-allocation-case/artifacts/bundle-*/run_manifest.json`。演示包含 greedy 平均值 `16.5`、exhaustive 平均值 `19.5` 和 `1/3` 失败分母，仅用于展示流程。
+Windows PowerShell 对应命令：
+
+```powershell
+$env:MPLCONFIGDIR = Join-Path $env:TEMP 'mmagent-mpl'
+rtk uv run python examples/experiment/allocation/run_demo.py (Join-Path $env:TEMP 'synthetic-allocation-case')
+```
+
+结果位于 `/tmp/synthetic-allocation-case/artifacts/bundle-*/run_manifest.json`（Windows 为选定的临时 case 目录）。演示包含 greedy 平均值 `16.5`、exhaustive 平均值 `19.5` 和 `1/3` 失败分母，仅用于展示流程。
 

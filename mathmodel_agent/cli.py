@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 import shutil
 import signal
@@ -17,6 +18,7 @@ from .execution import finalize_experiment, prepare_experiment, run_experiment, 
 from .publication.cli import add_publication_parser
 from .runtime.config import ConfigError, init_case, load_case_config
 from .runtime.scheduler import Supervisor
+from .runtime.platform import executable_command
 from .runtime.state import State, TaskNotFound
 from .workflow import Coordinator, submit_coordinator
 
@@ -169,7 +171,7 @@ def doctor(case_root: Path | None = None) -> dict:
         "network_checked": False,
         "credentials_inspected": False,
         "limitations": [
-            "workspace-write does not isolate secrets from another process running as the same Linux user",
+            "workspace-write does not isolate secrets from another process running as the same OS user",
             "provider authentication and endpoint configuration are inherited from user-level Codex configuration",
         ],
     }
@@ -195,33 +197,40 @@ def _tool_check(command: list[str]) -> dict:
         return {"available": False, "executable": None, "version": None}
     try:
         completed = subprocess.run(
-            command,
+            executable_command(command),
             stdin=subprocess.DEVNULL,
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             timeout=5,
             check=False,
         )
         first_line = next((line.strip() for line in completed.stdout.splitlines() if line.strip()), "")
     except (OSError, subprocess.TimeoutExpired) as exc:
-        first_line = f"unavailable: {type(exc).__name__}"
-    return {"available": True, "executable": executable, "version": first_line[:300] or None}
+        return {"available": False, "executable": executable, "version": f"unavailable: {type(exc).__name__}"}
+    return {"available": completed.returncode == 0, "executable": executable, "version": first_line[:300] or None}
 
 
 def _content_check(command: list[str]) -> dict:
     executable = shutil.which(command[0])
     if executable is None:
         return {"available": False, "value": None}
-    completed = subprocess.run(
-        command,
-        stdin=subprocess.DEVNULL,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        text=True,
-        timeout=5,
-        check=False,
-    )
+    try:
+        completed = subprocess.run(
+            executable_command(command),
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=5,
+            check=False,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return {"available": False, "value": None}
     value = next((line.strip() for line in completed.stdout.splitlines() if line.strip()), "")
     return {"available": completed.returncode == 0 and bool(value), "value": value[:500] or None}
 
@@ -229,6 +238,18 @@ def _content_check(command: list[str]) -> dict:
 def _font_check(name: str) -> dict:
     result = _content_check(["fc-match", "-f", "%{family}\n", name])
     result["available"] = result["available"] and name.lower() in (result["value"] or "").lower()
+    if os.name == "nt" and not result["available"]:
+        import winreg
+
+        for hive in (winreg.HKEY_CURRENT_USER, winreg.HKEY_LOCAL_MACHINE):
+            try:
+                with winreg.OpenKey(hive, r"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts") as key:
+                    for index in range(winreg.QueryInfoKey(key)[1]):
+                        label = winreg.EnumValue(key, index)[0]
+                        if name.lower() in label.lower():
+                            return {"available": True, "value": label, "source": "windows-font-registry"}
+            except OSError:
+                continue
     return result
 
 

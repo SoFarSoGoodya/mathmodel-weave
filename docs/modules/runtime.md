@@ -1,6 +1,6 @@
 # Runtime
 
-`mmagent` is a Linux/WSL process supervisor, not a socket service. Each case has one SQLite
+`mmagent` is a Windows 11 and Linux/WSL process supervisor, not a socket service. Each case has one SQLite
 state store, immutable attempt logs, fixed task workspaces, and a single publication path.
 Task success records process completion only; it does not assert scientific validity or human
 approval.
@@ -40,10 +40,21 @@ Main sessions get one immediate same-session retry. Authentication, configuratio
 unknown-session, and non-transient failures do not automatically switch provider or session.
 Retry waiting holds neither a process slot nor a database transaction.
 
-`mmagent cancel` persists intent. The active supervisor sends SIGINT, then SIGTERM, then
-SIGKILL to the process group if required. Restart reconciliation verifies Linux PID start
-identity before signaling a surviving process, adopts no arbitrary process, accepts a complete
-agent event log as success, and pauses a dead command whose exit status was lost.
+`mmagent cancel` persists intent. On Linux/WSL, the active supervisor sends SIGINT, then
+SIGTERM, then SIGKILL to the process group. On Windows, it starts a new process group
+suspended, assigns it to a named Job Object, then resumes the primary thread; descendants
+cannot launch before ownership is established. It tries CTRL_BREAK_EVENT, then terminates
+the whole job after a two-second grace period. Without a usable console, the break may be
+unavailable and forced job termination still applies. Closing the job also ends descendants
+when the root exits or the supervisor is killed. Ownership failures are recorded as
+`process_start` errors and the suspended child is reaped.
+
+Restart reconciliation checks Linux `/proc` start ticks or Windows process creation time
+before signaling a surviving process; these saved identities are host-specific. Windows
+reconciliation opens the job named by the run ID rather than killing unrelated processes.
+It adopts no arbitrary process, accepts a complete agent event log as success, and pauses
+a dead command whose exit status was lost. There is still one supervisor per case, and
+no cross-system absolute-path migration is implied.
 
 ## Coordinator Output
 
@@ -59,7 +70,10 @@ those bundles through `publish_bundle` and records receipts in RESULT state.
 `publish_bundle(case_root, staging, submission_id, ...)` rejects symlinks, path escape,
 reserved temporary names, and files that change during inspection/copy. It hashes files in
 1 MiB chunks, writes `bundle.json`, and atomically renames a same-filesystem temporary bundle.
-The publication lock serializes both CLI and domain callers. Replaying the same submission ID
+The publication lock serializes both CLI and domain callers using `fcntl.flock` on Linux/WSL
+and a blocking retry of a one-byte `msvcrt` lock on Windows. The OS releases the lock when
+its owning process exits. Windows junctions are rejected alongside symlinks in staging and
+selected input trees. Replaying the same submission ID
 with identical content returns the original receipt; changed content raises
 `SubmissionConflict`. `resolve_bundle` verifies the ArtifactRef, manifest, declared file set,
 sizes, and hashes by default.
@@ -68,4 +82,8 @@ sizes, and hashes by default.
 
 `uv run mmagent doctor [CASE]` performs local checks for Codex, uv, bun, rtk, XeLaTeX,
 latexmk, BibTeX, CTeX/xeCJK/zhnumber, Noto CJK fonts, and Poppler tools, plus configured case
-tools. It performs no live provider request and does not inspect or print credentials.
+tools. Windows executable lookup honors `PATH`/`PATHEXT`, including task-specific `PATH`
+and explicit executable paths relative to the task workspace. Command output is decoded as
+UTF-8 with replacement for undecodable bytes, and font checks can fall back to the Windows
+font registry when fontconfig cannot find the requested family. It performs no live provider
+request and does not inspect or print credentials.

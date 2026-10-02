@@ -2,7 +2,7 @@
 
 ## Restore product development
 
-Clone or restore this product repository and enter its root. The source requires Python 3.12 or newer; the runtime supervisor targets Linux/WSL. Python dependencies are managed by `uv` and the tracked `uv.lock`. Use `bun` for optional Node tools and `rtk` for routine shell commands. Do not copy an old virtual environment as the dependency installation method.
+Clone or restore this product repository and enter its root. The source requires Python 3.12 or newer; the runtime supervisor supports native Windows 11 and Linux/WSL. Python dependencies are managed by `uv` and the tracked `uv.lock`; `pywin32` is installed only on Windows. Use `bun` for optional Node tools and `rtk` for routine shell commands. Do not copy an old virtual environment as the dependency installation method.
 
 ```text
 rtk uv sync --locked
@@ -13,6 +13,20 @@ rtk uv run mmagent doctor
 Doctor checks local Codex, uv, bun, rtk, XeLaTeX/latexmk/BibTeX, CTeX/xeCJK/zhnumber, Noto CJK fonts and Poppler. `rtk uv run mmagent doctor CASE_DIR` also checks case configuration and configured tool executables. It does not log in, inspect credentials, contact a live provider, exercise MCP, verify model availability, or prove resume works. Missing publication dependencies can be addressed when publication work is needed; an inherited successful PDF does not establish that this host can rebuild it.
 
 Codex/provider configuration, profiles, credentials and MCP login belong in the user's trusted local environment. The product does not install or rewrite global authentication/configuration. Recreate or securely restore them yourself; do not send secrets through chat or put them in Git, case TOML/JSON/Markdown, or human answers. Restore system fonts and TeX packages separately. A custom TeX tree containing required packages is a host dependency, not necessarily a disposable cache.
+
+## Native Windows
+
+Run the same bootstrap commands in PowerShell. Install Windows builds of Codex CLI, uv and rtk on `PATH`; optional bun, TeX and Poppler also need Windows executables. Doctor resolves executable paths and checks command exit status. Its font check uses fontconfig when available and falls back to the user/system Windows font registry. Missing Noto fonts remain publication prerequisites; the product does not install fonts or change global settings automatically.
+
+Use Windows paths in task argv, and quote paths containing spaces. Prefer native `.exe` tools for arguments containing shell metacharacters; `.cmd`/`.bat` launchers follow Windows batch quoting rules. PowerShell built-ins are not standalone executables: submit an explicit `powershell.exe` or `pwsh.exe` invocation when needed. Existing POSIX commands such as `sleep` are not translated automatically; use the selected Python interpreter for a portable delay (`python -c "import time; time.sleep(1)"`).
+
+```powershell
+rtk uv run mmagent doctor
+# Only when starting a new case; use a directory outside the product repository.
+rtk uv run mmagent init 'D:\MathModelCases\case-one'
+```
+
+Native locks and Job Objects replace Linux-only runtime mechanisms; see [runtime](modules/runtime.md). Symlinks and Windows junctions are rejected in selected input trees and publication staging. Creating a symlink may require Developer Mode or administrator privileges; using the product does not require enabling either. Cross-system restoration still needs an explicit new-case import when the original absolute paths cannot be retained.
 
 ## Configure a new case
 

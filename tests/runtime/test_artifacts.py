@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 
 import pytest
@@ -28,7 +27,7 @@ def test_publish_deduplicates_conflicts_and_verifies_large_file(case_root: Path)
         publish_bundle(case_root, staging, "submission-1")
 
 
-def test_publish_rejects_escape_symlink_and_partial_files(case_root: Path):
+def test_publish_rejects_escape_symlink_and_partial_files(case_root: Path, directory_link):
     outside = case_root.parent / "outside"
     outside.mkdir()
     (outside / "x").write_text("x", encoding="utf-8")
@@ -37,10 +36,14 @@ def test_publish_rejects_escape_symlink_and_partial_files(case_root: Path):
 
     staging = case_root / "paper" / "staging"
     staging.mkdir()
-    os.symlink(outside / "x", staging / "link")
+    directory_link(outside, staging / "link")
     with pytest.raises(ArtifactError, match="symlink"):
         publish_bundle(case_root, staging, "symlink")
-    (staging / "link").unlink()
+    link = staging / "link"
+    if link.is_symlink():
+        link.unlink()
+    else:
+        link.rmdir()
     (staging / "still.partial").write_text("half", encoding="utf-8")
     with pytest.raises(ArtifactError, match="incomplete"):
         publish_bundle(case_root, staging, "partial")

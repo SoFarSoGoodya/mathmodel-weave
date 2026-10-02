@@ -19,7 +19,8 @@ parameters, or images in the checked product material.
 ## Dependencies and host prerequisites
 
 The Python package declares `matplotlib`, `openpyxl`, and `pypdf` as external
-runtime dependencies. Their code is not relicensed by this repository; users
+runtime dependencies, plus `pywin32` only on Windows for native process supervision.
+Their code is not relicensed by this repository; users
 must retain and follow the license and notice terms supplied by each package
 when redistributing those packages or a distribution that includes them.
 `hatchling` is an external build dependency with the same separation.

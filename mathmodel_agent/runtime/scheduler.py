@@ -6,7 +6,6 @@ from dataclasses import dataclass
 import json
 import os
 from pathlib import Path
-import signal
 import subprocess
 import threading
 import time
@@ -15,6 +14,7 @@ import uuid
 
 from .artifacts import publish_bundle
 from .config import Profile
+from .platform import executable_command, own_process, process_group, process_options, signal_process_group
 from .provider import (
     attempt_succeeded,
     build_codex_command,
@@ -34,6 +34,7 @@ class ActiveRun:
     events_path: Path
     stderr_path: Path
     started_at: float
+    job: object | None = None
     termination_reason: str | None = None
     signal_stage: int = 0
     signal_deadline: float | None = None
@@ -94,7 +95,7 @@ class Supervisor:
             time.sleep(0.05)
         for active in list(self.active.values()):
             if active.process.poll() is None:
-                self._signal(active, signal.SIGKILL)
+                self._signal(active, 3)
             try:
                 active.process.wait(timeout=1)
             except subprocess.TimeoutExpired:
@@ -142,15 +143,16 @@ class Supervisor:
         environment.update(task["spec"].get("env", {}))
         try:
             process = self.process_factory(
-                command,
+                executable_command(command, cwd=workspace, env=environment),
                 cwd=workspace,
                 env=environment,
                 stdin=stdin,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                start_new_session=True,
+                **process_options(),
             )
-        except OSError as exc:
+            job = own_process(process, run_id)
+        except (OSError, RuntimeError) as exc:
             stderr_path.write_text(str(exc), encoding="utf-8")
             error = {"type": "process_start", "message": str(exc)}
             self.state.finish_run(
@@ -159,7 +161,7 @@ class Supervisor:
             )
             return
         self.state.set_run_process(
-            run_id, process.pid, os.getpgid(process.pid), process_start_ticks(process.pid)
+            run_id, process.pid, process_group(process.pid), process_start_ticks(process.pid)
         )
         stdout_thread = threading.Thread(
             target=self._capture_stdout,
@@ -188,6 +190,7 @@ class Supervisor:
             events_path=events_path,
             stderr_path=stderr_path,
             started_at=now,
+            job=job,
         )
 
     def _poll_active(self, now: float) -> None:
@@ -209,6 +212,9 @@ class Supervisor:
                 self._finish(active, code, now)
 
     def _finish(self, active: ActiveRun, exit_code: int | None, now: float) -> None:
+        if active.job is not None:
+            active.job.Close()
+            active.job = None
         for thread in active.threads:
             thread.join(timeout=2)
         summary = parse_event_file(active.events_path)
@@ -342,11 +348,8 @@ class Supervisor:
                 occupied += 1
                 if (run["cancel_requested"] or timed_out) and run["pgid"]:
                     reference = run["task_updated_at"] if run["cancel_requested"] else run["started_at"] + run["spec"].get("timeout_seconds", 7200)
-                    signum = signal.SIGKILL if now - reference >= 4 else signal.SIGTERM
-                    try:
-                        os.killpg(run["pgid"], signum)
-                    except ProcessLookupError:
-                        pass
+                    stage = 3 if now - reference >= 4 else 2
+                    signal_process_group(run["pgid"], stage, run_id=run["run_id"])
                 continue
             stderr_path = Path(run["stderr_path"])
             stderr = stderr_path.read_text(encoding="utf-8", errors="replace") if stderr_path.exists() else ""
@@ -399,26 +402,23 @@ class Supervisor:
         active.termination_reason = reason
         active.signal_stage = 1
         active.signal_deadline = now + 2
-        self._signal(active, signal.SIGINT)
+        self._signal(active, 1)
 
     def _advance_termination(self, active: ActiveRun, now: float) -> None:
         if active.signal_deadline is None or now < active.signal_deadline:
             return
         if active.signal_stage == 1:
-            self._signal(active, signal.SIGTERM)
+            self._signal(active, 2)
             active.signal_stage = 2
             active.signal_deadline = now + 2
         elif active.signal_stage == 2:
-            self._signal(active, signal.SIGKILL)
+            self._signal(active, 3)
             active.signal_stage = 3
             active.signal_deadline = None
 
     @staticmethod
-    def _signal(active: ActiveRun, signum: int) -> None:
-        try:
-            os.killpg(active.process.pid, signum)
-        except ProcessLookupError:
-            pass
+    def _signal(active: ActiveRun, stage: int) -> None:
+        signal_process_group(active.process.pid, stage, job=active.job)
 
     @staticmethod
     def _capture_raw(source: BinaryIO | None, destination: Path) -> None:

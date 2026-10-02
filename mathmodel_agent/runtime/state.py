@@ -14,6 +14,7 @@ from typing import Any
 import uuid
 
 from .config import load_case_config
+from .platform import is_link
 
 
 TASK_STATES = {"queued", "running", "retry_wait", "paused", "succeeded", "failed", "cancelled"}
@@ -651,7 +652,7 @@ class State:
         if relative.is_absolute():
             raise TaskValidationError("selected source must be case-relative")
         source = self.case_root / relative
-        if source.is_symlink() or not source.exists():
+        if is_link(source) or not source.exists():
             raise TaskValidationError(f"selected source is missing or a symlink: {value}")
         resolved = source.resolve()
         if not resolved.is_relative_to(self.case_root):
@@ -667,7 +668,7 @@ class State:
         for root, directories, files in os.walk(source, followlinks=False):
             root_path = Path(root)
             for name in directories + files:
-                if (root_path / name).is_symlink():
+                if is_link(root_path / name):
                     raise TaskValidationError(f"selected directory contains symlink: {root_path / name}")
             relative = root_path.relative_to(source)
             (destination / relative).mkdir(parents=True, exist_ok=True)
@@ -702,11 +703,9 @@ class State:
 
 
 def process_start_ticks(pid: int) -> int | None:
-    try:
-        fields = Path(f"/proc/{pid}/stat").read_text(encoding="utf-8").split()
-        return int(fields[21])
-    except (FileNotFoundError, IndexError, ValueError, PermissionError):
-        return None
+    from .platform import process_start_ticks as host_process_start_ticks
+
+    return host_process_start_ticks(pid)
 
 
 def process_identity_matches(pid: int | None, start_ticks: int | None) -> bool:
