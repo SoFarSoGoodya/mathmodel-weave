@@ -140,10 +140,9 @@ After inspecting the actual PNGs under `paper/review/pages/` and the AI detail p
 uv run python -c 'from mathmodel_agent.publication import record_visual_review; print(record_visual_review("examples/publication/synthetic-paper/build/paper/review/BUILD_REPORT.md", inspected_pages=list(range(1, 9)), notes=["record concrete findings here"]))'
 ```
 
-## D6 CLI Hook
+## Current CLI integration
 
-Register `mathmodel_agent.publication.cli.add_publication_parser(subparsers)` in the shared
-parser. The registered commands are:
+`mathmodel_agent.cli.build_parser` already registers `mathmodel_agent.publication.cli.add_publication_parser(subparsers)`. The current commands are:
 
 ```text
 mmagent publication build CASE_ROOT REQUEST_JSON
@@ -154,8 +153,7 @@ mmagent publication request-approval CASE_ROOT REF_JSON
 mmagent publication export CASE_ROOT REF_JSON DEST --decision-id D-001
 ```
 
-The final top-level CLI dispatcher should call `args.handler(args)` and print its JSON result,
-matching the evidence hook pattern.
+The current top-level dispatcher calls `args.handler(args)` and prints its JSON result, matching the evidence hook pattern. This records existing source wiring, not a newly executed provider or publication-build verification.
 
 ## Outputs And Limits
 

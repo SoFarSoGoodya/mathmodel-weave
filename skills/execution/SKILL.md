@@ -7,7 +7,7 @@ Use the runtime-backed execution API in `mathmodel_agent.execution`; do not star
 private subprocess, task queue, or per-seed worker system.
 
 - Make every command argv explicit and case-relative inputs explicit. Use only the
-  documented command placeholders from `docs/execution.md`.
+  documented command placeholders from `docs/modules/execution.md`.
 - Use `formal` only after supplying a stable comparison-contract JSON. Preserve every
   planned instance, including failed or timed-out ones. Deterministic algorithms have
   `seed: null`.

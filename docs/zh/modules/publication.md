@@ -140,10 +140,9 @@ After inspecting the actual PNGs under `paper/review/pages/` and the AI detail p
 uv run python -c 'from mathmodel_agent.publication import record_visual_review; print(record_visual_review("examples/publication/synthetic-paper/build/paper/review/BUILD_REPORT.md", inspected_pages=list(range(1, 9)), notes=["record concrete findings here"]))'
 ```
 
-## D6 CLI Hook
+## 当前 CLI 接入
 
-Register `mathmodel_agent.publication.cli.add_publication_parser(subparsers)` in the shared
-parser. The registered commands are:
+`mathmodel_agent.cli.build_parser` 已注册 `mathmodel_agent.publication.cli.add_publication_parser(subparsers)`，当前命令如下：
 
 ```text
 mmagent publication build CASE_ROOT REQUEST_JSON
@@ -154,8 +153,7 @@ mmagent publication request-approval CASE_ROOT REF_JSON
 mmagent publication export CASE_ROOT REF_JSON DEST --decision-id D-001
 ```
 
-The final top-level CLI dispatcher should call `args.handler(args)` and print its JSON result,
-matching the evidence hook pattern.
+当前顶层 dispatcher 调用 `args.handler(args)` 并打印 JSON 结果，与 evidence 接入模式一致。这里记录现有源码接入，不代表本轮新执行了 provider 或出版构建验证。
 
 ## Outputs And Limits
 

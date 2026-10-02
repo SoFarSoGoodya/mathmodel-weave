@@ -4,15 +4,17 @@ D3 is file-driven. It adds no scheduler or task database: `State` remains the so
 
 ## Minimal Path
 
-From `product/`, create a case and let the human edit the problem text directly:
+From the repository root, create a case and let the human edit the problem text directly:
 
 ```bash
 UV_CACHE_DIR=/tmp/mmagent-uv-cache uv run mmagent init /tmp/mm-case
 ```
 
-Put the confirmed problem statement in `/tmp/mm-case/problem/question.md`. Create the mode/scope question through `mathmodel_agent.control.ask_human`, displaying the exact problem reference and setting `limits={"bounds": {...}}`; the human answers in `/tmp/mm-case/human/HUMAN_ANSWERS.md` with an `A-###` heading and `For: Q-###`. A D6 CLI subcommand should call `capture_human_answer`, `consume_answers`, and `record_human_decision` after the human explicitly names one displayed choice. D3 intentionally does not add that CLI wiring.
+Put the confirmed problem statement in `/tmp/mm-case/problem/question.md`. Create the mode/scope question through `mathmodel_agent.control.ask_human`, displaying the exact problem reference and setting `limits={"bounds": {...}}`; the human answers in `/tmp/mm-case/human/HUMAN_ANSWERS.md` with an `A-###` heading and `For: Q-###`. The current shared CLI exposes `human ask-tier`, `human answer`, `human refresh`, and `human decide`; they record a real answer and explicit displayed choice through the control APIs. `start` and `workflow poll` are also wired in `mathmodel_agent/cli.py`. This describes current source integration, not a new live-provider test.
 
-The equivalent current Python hook is:
+The custom Python question hook below illustrates fixed-object control. It is not the tier object accepted by `start`: use `human ask-tier` for that flow, which binds the selected profile model/effort and problem hash.
+
+The Python hook is:
 
 ```python
 from mathmodel_agent.control import ask_human, record_human_decision
@@ -42,13 +44,13 @@ Submit the coordinator as a normal D1 main agent task, then run the D1 superviso
 from mathmodel_agent.workflow import Coordinator, submit_coordinator
 
 task_id = submit_coordinator("/tmp/mm-case", task_id="coordinator-1", prompt="Explore the confirmed case.", inputs=["problem/question.md"])
-# D6 wires the normal `mmagent serve /tmp/mm-case` command.
+# The shared CLI exposes `mmagent serve /tmp/mm-case` and `workflow poll`.
 result = Coordinator("/tmp/mm-case").poll(task_id)
 ```
 
 A completed coordinator turn can place `requests`, `wait_for`, and `deliverables` in D1's `RESULT.json` shape, plus D3's optional `human_requests` and `wait_for_human`. D3 submits only valid case-relative requests. Formal scientific requests require `research_class: "formal"`, `research_scope`, non-empty `bounds`, and a matching approved human scope. Formal selection of a route, result, fusion, or paper package also requires an exact human decision bound to the same selected object. Routine internal iterations do not need that extra gate.
 
-`Coordinator.poll()` waits while child tasks or explicit human questions are unresolved. It does not keep the coordinator process running. Once they resolve, it calls `State.resume(task_id, followup=...)` with bounded result material. Failed, cancelled, and unknown children remain visible in that continuation and are not promoted to successful evidence. D6 should expose this poll/resume cycle as its domain CLI command.
+`Coordinator.poll()` waits while child tasks or explicit human questions are unresolved. It does not keep the coordinator process running. Once they resolve, it calls `State.resume(task_id, followup=...)` with bounded result material. Failed, cancelled, and unknown children remain visible in that continuation and are not promoted to successful evidence. The current `mmagent workflow poll CASE TASK` command exposes this cycle; it resumes the saved provider session and cannot recreate unavailable history.
 
 During draft review, ask an `ai_disclosure` question displaying the exact task ID,
 adoption, modification, and human-verification facts. After the human confirms those facts,

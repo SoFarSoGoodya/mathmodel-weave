@@ -27,5 +27,5 @@ every page and inspect all of them. Compilation alone leaves `visual_review_pend
 `review_ready` requires explicit page-complete visual notes and is not human approval.
 
 Use `mathmodel_agent.publication.build_publication(case_root, request)` for the deterministic
-pipeline. See `docs/publication.md` for the request fields, rule configuration, CLI hook, and
+pipeline. See `docs/modules/publication.md` for the request fields, rule configuration, CLI hook, and
 exact commands.

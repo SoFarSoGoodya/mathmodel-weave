@@ -1,7 +1,7 @@
 # Codex 项目操作入口
 
-- 先读 `docs/guide.md`；需要具体环境、配置、命令或故障细节时，再查 `docs/setup.md`、`docs/cli.md`。
-- 先判断用户是在开始新题，还是继续已有 case。继续时检查现有状态并保留原 case、任务、provider session、授权范围和已记录决定。
+- 先区分日常使用与产品开发。使用时读 `docs/zh/guide.md`，需要具体环境、配置、命令或故障细节时查 `docs/zh/setup.md`、`docs/zh/cli.md`。开发时先读 `PROJECT_MEMORY.md`、`docs/zh/dev.md`、`docs/zh/status.md`、`docs/zh/design.md` 和对应模块；英文对应页在 `docs/`。维护源码不要求先建立题目 case 或批准研究档位。
+- 使用时先判断用户是在开始新题，还是继续已有 case。继续时检查现有状态，保留原 case、旧 task/attempt、日志/已保存产物、授权范围和有效决定。旧 provider session 仅在原历史仍可访问时可恢复；换系统后不能凭旧 ID 或 SQLite 假定找回真实对话。历史丢失时保留旧记录，显式用新 task ID/session 接续选定材料，不手改数据库伪造恢复。完整 case 备份、原绝对路径与新 case 导入限制见 `docs/zh/dev.md`、`docs/zh/setup.md`。
 - 由助手运行确定性的 `doctor`、初始化和现有 `mmagent` 命令，简明回报结果及真人必须完成的登录、管理员操作或审阅。不要把测试、示例运行或 PDF 重建当作每次启动的必经步骤。
 - 真人必须明确确认研究档位，以及正式路线、结果、重要权限或预算变化、AI 使用披露事实和最终完整提交包。standard 只是可推荐选项，不是默认批准。
 - 用户在聊天中作答时，按其原话绑定当前已展示问题并用现有命令记录；用户编辑 Markdown 后，须等其通知“已更新，请读取最新内容”再读取，不得声称自动监听。
